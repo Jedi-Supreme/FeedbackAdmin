@@ -9,13 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activities.CompDetails_activity"></activity>
         <activity
-            android:label="@string/login"
-            android:name=".activities.LoginActivity"/>
-
+            android:name=".activities.LoginActivity"
+            android:label="@string/login" />
         <activity
-            android:label="@string/dash_b"
-            android:name=".activities.Dashboard">
+            android:name=".activities.Dashboard"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

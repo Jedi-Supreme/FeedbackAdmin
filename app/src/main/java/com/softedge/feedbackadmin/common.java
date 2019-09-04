@@ -1,5 +1,7 @@
 package com.softedge.feedbackadmin;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 
@@ -32,5 +34,9 @@ public class common {
         snackbar.setAction("Close", v -> snackbar.dismiss());
 
         return snackbar;
+    }
+
+    public static SharedPreferences app_pref(Context context){
+        return context.getSharedPreferences("Feedback_pref", Context.MODE_PRIVATE);
     }
 }

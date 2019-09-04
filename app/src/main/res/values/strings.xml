@@ -4,4 +4,8 @@
     <string name="login">Login</string>
     <string name="password">Password</string>
     <string name="dash_b">Dashboard</string>
+    <string name="branch_name_in_lbl">Branch Name</string>
+    <string name="conf_pass">Confirm Password</string>
+    <string name="new_pass">New Password</string>
+    <string name="entp_name_in_lbl">Company Name</string>
 </resources>
