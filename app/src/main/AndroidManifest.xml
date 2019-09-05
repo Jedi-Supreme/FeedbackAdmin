@@ -9,13 +9,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.CompDetails_activity"></activity>
+        <activity android:name=".activities.ReportsActivity"></activity>
+        <activity android:name=".activities.Dashboard" />
+        <activity android:name=".activities.Registration_activity" />
         <activity
             android:name=".activities.LoginActivity"
             android:label="@string/login" />
         <activity
-            android:name=".activities.Dashboard"
-            android:label="@string/app_name">
+            android:name=".activities.LoadScreen"
+            android:label="@string/app_name"
+            android:theme="@style/noActionbar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

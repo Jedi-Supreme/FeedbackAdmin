@@ -8,4 +8,8 @@
     <string name="conf_pass">Confirm Password</string>
     <string name="new_pass">New Password</string>
     <string name="entp_name_in_lbl">Company Name</string>
+    <string name="loading_lbl">Loading…</string>
+    <string name="settings_lbl">Settings</string>
+    <string name="report_lbl">Reports</string>
+    <string name="logout">Logout</string>
 </resources>

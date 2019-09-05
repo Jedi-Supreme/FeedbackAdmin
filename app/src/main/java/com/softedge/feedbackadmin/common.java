@@ -11,10 +11,6 @@ import java.util.Locale;
 
 public class common {
 
-    public static final String STATE_ACTIVE = "Active";
-    public static final String STATE_PENDING = "Pending";
-    public static final String STATE_COMPLETED = "Completed";
-    public static final String STATE_CANCELLED = "Cancelled";
 
     public static String time_to_date(String timeMillis){
 

@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
@@ -83,8 +82,6 @@ public class LoginActivity extends AppCompatActivity {
                         // Sign in success, update UI with the signed-in user's information
                         //Before going to dashboard, fetch company data
                         load_company_Data();
-                        probar_login.setVisibility(View.INVISIBLE);
-                        probar_login.clearAnimation();
 
                     } else {
 
@@ -117,12 +114,12 @@ public class LoginActivity extends AppCompatActivity {
 
         String uid;
 
-        DatabaseReference comp_ref = FirebaseDatabase.getInstance().getReference("Enterprise_Details");
+        DatabaseReference comp_ref = FirebaseDatabase.getInstance().getReference("Registered_Companies");
 
 
         if (FirebaseAuth.getInstance().getCurrentUser() != null){
             uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            Toast.makeText(getApplicationContext(), uid, Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(), uid, Toast.LENGTH_LONG).show();
 
             comp_ref.child(uid).addValueEventListener(new ValueEventListener() {
                 @Override
@@ -130,6 +127,9 @@ public class LoginActivity extends AppCompatActivity {
                     Company_details company = dataSnapshot.getValue(Company_details.class);
 
                     if (company != null){
+
+                        probar_login.setVisibility(View.INVISIBLE);
+                        probar_login.clearAnimation();
 
                         SharedPreferences.Editor pref_editor = common.app_pref(weak_login.get()).edit();
 
@@ -144,6 +144,8 @@ public class LoginActivity extends AppCompatActivity {
                         toDashboard();
 
                     }else {
+                        probar_login.setVisibility(View.INVISIBLE);
+                        probar_login.clearAnimation();
                         toComp_details();
                     }
                 }
@@ -161,13 +163,13 @@ public class LoginActivity extends AppCompatActivity {
 
     //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=INTENT-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     private void toDashboard() {
-        Intent dash_intent = new Intent(getApplicationContext(), Dashboard.class);
+        Intent dash_intent = new Intent(getApplicationContext(), LoadScreen.class);
         startActivity(dash_intent);
         finish();
     }
 
     private void toComp_details(){
-        Intent comp_details_intent = new Intent(getApplicationContext(), CompDetails_activity.class);
+        Intent comp_details_intent = new Intent(getApplicationContext(), Registration_activity.class);
         startActivity(comp_details_intent);
     }
     //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=INTENT-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
