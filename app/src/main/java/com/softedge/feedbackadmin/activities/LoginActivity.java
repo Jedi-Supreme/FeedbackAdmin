@@ -114,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
 
         String uid;
 
-        DatabaseReference comp_ref = FirebaseDatabase.getInstance().getReference("Registered_Companies");
+        DatabaseReference comp_ref = FirebaseDatabase.getInstance().getReference(getResources().getString(R.string.fb_reg_comp));
 
 
         if (FirebaseAuth.getInstance().getCurrentUser() != null){

@@ -39,7 +39,7 @@ public class Registration_activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_comp_details);
+        setContentView(R.layout.activity_reg_details);
 
         weak_comp_reg = new WeakReference<>(this);
         enterprice_list = new ArrayList<>();
@@ -57,7 +57,7 @@ public class Registration_activity extends AppCompatActivity {
         et_reg_confpass.setOnFocusChangeListener((v, hasFocus) -> input_reg_confpass.setPasswordVisibilityToggleEnabled(hasFocus));
 
         try {
-            load_enterprise_list();
+            load_company_list();
         }catch (Exception e){
             Toast.makeText(getApplicationContext(), "Error loading names " + e.toString(), Toast.LENGTH_LONG).show();
         }
@@ -68,7 +68,7 @@ public class Registration_activity extends AppCompatActivity {
     //-------------------------------------------------DEFINED METHODS------------------------------
 
     void test_input(){
-        if (sp_ent_list.getSelectedItemPosition() <= 0){
+        if (sp_ent_list.getSelectedItemPosition() < 0){
             common.Mysnackbar(const_comp_reg,"Select Company name.", Snackbar.LENGTH_SHORT).show();
         }else if (et_reg_branchname.getText().toString().isEmpty() || et_reg_branchname.getText().toString().equals("")){
             common.Mysnackbar(const_comp_reg,"Enter branch name.", Snackbar.LENGTH_SHORT).show();
@@ -95,7 +95,7 @@ public class Registration_activity extends AppCompatActivity {
         String uid;
         String companyconfirm = companyDetails.getComp_name() + " - " + companyDetails.getBranch_name();
 
-        DatabaseReference company_ref = FirebaseDatabase.getInstance().getReference("Registered_Companies");
+        DatabaseReference company_ref = FirebaseDatabase.getInstance().getReference(getResources().getString(R.string.fb_reg_comp));
 
         if (FirebaseAuth.getInstance().getCurrentUser() != null){
             uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -115,7 +115,7 @@ public class Registration_activity extends AppCompatActivity {
                 }else {
 
                     Toast.makeText(getApplicationContext(), "Registration failed for "
-                            + companyconfirm + "\n Try again later.", Toast.LENGTH_SHORT).show();
+                            + companyconfirm + "\n\nTry again later.", Toast.LENGTH_SHORT).show();
 
                 }
             });
@@ -125,8 +125,9 @@ public class Registration_activity extends AppCompatActivity {
 
     }
 
-    void load_enterprise_list(){
-        DatabaseReference ent_ref = FirebaseDatabase.getInstance().getReference("Enterprise_Details");
+    void load_company_list(){
+        DatabaseReference ent_ref = FirebaseDatabase.getInstance()
+                .getReference(getResources().getString(R.string.fb_comp_list));
 
         ent_ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -135,13 +136,13 @@ public class Registration_activity extends AppCompatActivity {
                 for (DataSnapshot name : dataSnapshot.getChildren()){
                     String ent_name = name.getValue(String.class);
                     if (ent_name != null && !ent_name.equals("")){
-                        //Toast.makeText(getApplicationContext(), ent_name, Toast.LENGTH_SHORT).show();
                         enterprice_list.add(ent_name);
                     }
                 }
 
                 if (enterprice_list.size() > 0){
-                    ArrayAdapter<String> sp_adapter = new ArrayAdapter<>(weak_comp_reg.get(),android.R.layout.simple_spinner_dropdown_item,
+                    ArrayAdapter<String> sp_adapter = new ArrayAdapter<>(weak_comp_reg.get(),
+                            android.R.layout.simple_spinner_dropdown_item,
                             enterprice_list);
                     sp_ent_list.setAdapter(sp_adapter);
                 }

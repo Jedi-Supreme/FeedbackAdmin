@@ -48,13 +48,13 @@ public class LoadScreen extends AppCompatActivity {
         iv_loading.startAnimation(anim);
 
         SharedPreferences app_pref = common.app_pref(weak_load.get());
-        String branch_name = app_pref.getString(Company_details.BRANCH_NAME,"");
+        String comp_name = app_pref.getString(Company_details.COMPANY_NAME,"");
 
         if (FirebaseAuth.getInstance().getCurrentUser() == null){
             login_intent();
         }else {
 
-            if (branch_name.equals("")){
+            if (comp_name.equals("")){
                 load_company_Data();
             }else {
                 toDashboard();
@@ -69,7 +69,7 @@ public class LoadScreen extends AppCompatActivity {
 
         String uid;
 
-        DatabaseReference comp_ref = FirebaseDatabase.getInstance().getReference("Registered_Companies");
+        DatabaseReference comp_ref = FirebaseDatabase.getInstance().getReference(getResources().getString(R.string.fb_reg_comp));
 
         if (FirebaseAuth.getInstance().getCurrentUser() != null){
             uid = FirebaseAuth.getInstance().getCurrentUser().getUid();

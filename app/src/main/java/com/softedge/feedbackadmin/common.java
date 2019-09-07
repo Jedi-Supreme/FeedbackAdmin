@@ -12,6 +12,9 @@ import java.util.Locale;
 public class common {
 
 
+    public static final Boolean GOOD_REVIEW = true;
+    public static final Boolean BAD_REVIEW = false;
+
     public static String time_to_date(String timeMillis){
 
         Calendar calendar = Calendar.getInstance();

@@ -4,8 +4,7 @@ import android.content.SharedPreferences;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.widget.TextView;
+import android.view.View;
 
 import com.softedge.feedbackadmin.R;
 import com.softedge.feedbackadmin.common;
@@ -34,6 +33,19 @@ public class Dashboard extends AppCompatActivity {
         if (actionBar != null){
             actionBar.setTitle(all);
         }
-        //tv_dash_txt.setText(all);
+    }
+
+    public void Click_listener(View view) {
+
+        switch (view.getId()){
+
+            case R.id.bt_dash_report:
+                break;
+            case R.id.bt_dash_settings:
+                break;
+            case R.id.bt_dash_logout:
+                break;
+
+        }
     }
 }
