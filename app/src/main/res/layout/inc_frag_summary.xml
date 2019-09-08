@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/margin_tiny">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/report_design_back"
+        android:orientation="vertical"
+        android:padding="@dimen/margin_tiny">
+
+        <TextView
+            android:id="@+id/tv_sum_total_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_tiny"
+            android:text="Total Reviews - 2400"
+            android:textColor="@color/white"
+            android:textStyle="bold|italic" />
+
+        <View
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"/>
+
+        <TextView
+            android:id="@+id/tv_sum_total_good"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_tiny"
+            android:text="Positive review - 240 (10%)"
+            android:textColor="@color/white"
+            android:textStyle="bold|italic" />
+
+        <View
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"/>
+
+        <TextView
+            android:id="@+id/tv_sum_total_bad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_tiny"
+            android:text="Negative review - 940 (70%)"
+            android:textColor="@color/white"
+            android:textStyle="bold|italic" />
+
+        <View
+            android:layout_marginBottom="@dimen/margin_tiny"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"/>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recy_sum_report"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/margin_small" />
+
+
+</LinearLayout>

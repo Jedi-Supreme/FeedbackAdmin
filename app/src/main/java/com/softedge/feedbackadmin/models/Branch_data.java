@@ -2,13 +2,15 @@ package com.softedge.feedbackadmin.models;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
-@Entity(tableName = "FEEDBACKS")
+@Entity(tableName = "FEEDBACKS", indices = {@Index(value = {"timestamp"},unique = true)})
 public class Branch_data {
 
     public static final String TABLE = "FEEDBACKS";
-    public static final String COLUMN_TIMESTAMP = "timestamp";
+    public static final String COLUMN_ID = "_id";
+    private static final String COLUMN_TIMESTAMP = "timestamp";
     public static final String COLUMN_DATE = "date";
     public static final String COLUMN_FEEDBACKS = "feedbacks";
     public static final String COLUMN_BRANCHNAME = "branchname";
@@ -66,5 +68,13 @@ public class Branch_data {
 
     public void setBranchname(String branchname) {
         this.branchname = branchname;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

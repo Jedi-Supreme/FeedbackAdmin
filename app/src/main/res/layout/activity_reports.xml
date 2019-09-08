@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.ReportsActivity">
+
+    <TabHost
+        android:id="@+id/report_tabhost"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!--Tabhost body-->
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/activity_padding">
+
+                <include
+                    android:id="@+id/sum_report"
+                    layout="@layout/inc_frag_summary"/>
+
+                <include
+                    android:id="@+id/cust_report"
+                    layout="@layout/inc_frag_custom"/>
+
+            </FrameLayout>
+
+
+        </LinearLayout>
+
+    </TabHost>
+
+</android.support.constraint.ConstraintLayout>
