@@ -5,6 +5,7 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
 import com.softedge.feedbackadmin.models.Branch_data;
+import com.softedge.feedbackadmin.models.Duty_roster;
 
 @Dao
 public interface Feedback_Access_Obj {
@@ -39,6 +40,9 @@ public interface Feedback_Access_Obj {
 
     @Insert
     void addFeedback(Branch_data branch_data);
+
+    @Insert
+    void addTeam_shift(Duty_roster duty_roster);
 
     @Query("DELETE FROM " + Branch_data.TABLE + " WHERE " + Branch_data.COLUMN_BRANCHNAME + " == :branchname")
     void delete_all_branchData(String branchname);

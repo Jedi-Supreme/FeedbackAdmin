@@ -1,7 +1,7 @@
 <resources>
 
     <string-array name="date_options_arr">
-        <item>N/A</item>
+        <item>All</item>
         <item>Single</item>
         <item>Range</item>
     </string-array>
@@ -12,9 +12,16 @@
     </string-array>
 
     <string-array name="feedback_options_arr">
-        <item>N/A</item>
+        <item>All</item>
         <item>Positive</item>
         <item>Negative</item>
+    </string-array>
+
+    <string-array name="shift_options_arr">
+        <item><i>Select</i></item>
+        <item>Morning</item>
+        <item>Afternoon</item>
+        <item>Night</item>
     </string-array>
 
     <string name="app_name">FeedBack Admin</string>
@@ -36,4 +43,8 @@
     <string name="branch_lbl">Branch</string>
     <string name="feedback_lbl">Feedback</string>
     <string name="search_lbl">Search</string>
+    <string name="account_lbl">Account</string>
+    <string name="duty_rosters">Duty Rosters</string>
+    <string name="team_name_lbl">Team name</string>
+    <string name="add_team_lbl">Add Team</string>
 </resources>

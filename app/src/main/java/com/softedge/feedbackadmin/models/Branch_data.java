@@ -9,7 +9,7 @@ import android.arch.persistence.room.PrimaryKey;
 public class Branch_data {
 
     public static final String TABLE = "FEEDBACKS";
-    public static final String COLUMN_ID = "_id";
+    public static final String COLUMN_ID = "id";
     private static final String COLUMN_TIMESTAMP = "timestamp";
     public static final String COLUMN_DATE = "date";
     public static final String COLUMN_FEEDBACKS = "feedbacks";

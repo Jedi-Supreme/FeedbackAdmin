@@ -1,9 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="@dimen/activity_padding"
     tools:context=".activities.SettingsActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:padding="@dimen/margin_tiny"
+        android:textSize="@dimen/med_text"
+        android:text="@string/account_lbl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:layout_marginEnd="@dimen/margin_small"
+        android:layout_marginStart="@dimen/margin_small"
+        android:background="@color/grey"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"/>
+
+    <TextView
+        android:padding="@dimen/margin_tiny"
+        android:textSize="@dimen/med_text"
+        android:text="@string/account_lbl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:layout_marginEnd="@dimen/margin_small"
+        android:layout_marginStart="@dimen/margin_small"
+        android:background="@color/grey"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"/>
+
+    <TextView
+        android:padding="@dimen/margin_tiny"
+        android:textSize="@dimen/med_text"
+        android:text="@string/account_lbl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:layout_marginEnd="@dimen/margin_small"
+        android:layout_marginStart="@dimen/margin_small"
+        android:background="@color/grey"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"/>
+
+    <TextView
+        android:padding="@dimen/margin_tiny"
+        android:textSize="@dimen/med_text"
+        android:text="@string/account_lbl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:layout_marginEnd="@dimen/margin_small"
+        android:layout_marginStart="@dimen/margin_small"
+        android:background="@color/grey"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"/>
+
+    <TextView
+        android:padding="@dimen/margin_tiny"
+        android:textSize="@dimen/med_text"
+        android:text="@string/account_lbl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:layout_marginEnd="@dimen/margin_small"
+        android:layout_marginStart="@dimen/margin_small"
+        android:background="@color/grey"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"/>
+
+
+</android.support.v7.widget.LinearLayoutCompat>
