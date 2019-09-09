@@ -1,4 +1,22 @@
 <resources>
+
+    <string-array name="date_options_arr">
+        <item>N/A</item>
+        <item>Single</item>
+        <item>Range</item>
+    </string-array>
+
+    <string-array name="branch_options_arr">
+        <item>All</item>
+        <item>Specific</item>
+    </string-array>
+
+    <string-array name="feedback_options_arr">
+        <item>N/A</item>
+        <item>Positive</item>
+        <item>Negative</item>
+    </string-array>
+
     <string name="app_name">FeedBack Admin</string>
     <string name="email">Email</string>
     <string name="login">Login</string>
@@ -12,4 +30,10 @@
     <string name="settings_lbl">Settings</string>
     <string name="report_lbl">Reports</string>
     <string name="logout">Logout</string>
+    <string name="date_lbl">Date</string>
+    <string name="start_date_lbl">Start Date</string>
+    <string name="end_date_lbl">End Date</string>
+    <string name="branch_lbl">Branch</string>
+    <string name="feedback_lbl">Feedback</string>
+    <string name="search_lbl">Search</string>
 </resources>
