@@ -1,8 +1,11 @@
 package com.softedge.feedbackadmin.models;
 
 import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
 @Entity(
@@ -10,7 +13,8 @@ import android.arch.persistence.room.PrimaryKey;
         foreignKeys = @ForeignKey(
                 entity = Branch_data.class,
                 parentColumns = Branch_data.COLUMN_ID,
-                childColumns = Branch_data.COLUMN_BRANCHNAME))
+                childColumns = Branch_data.COLUMN_BRANCHNAME),
+        indices = {@Index(value = Branch_data.COLUMN_BRANCHNAME)} )
 public class Duty_roster {
 
     public static final String COLUMN_START_DATE = "start_date";
@@ -30,11 +34,15 @@ public class Duty_roster {
     @ColumnInfo(name = COLUMN_TEAM_NAME)
     private String team_name;
 
-    @ColumnInfo(name = COLUMN_SHIFT)
+    @Embedded
     private Shift shift;
 
     @ColumnInfo(name = Branch_data.COLUMN_BRANCHNAME)
     private String branch_name;
+
+    @Ignore
+    public Duty_roster() {
+    }
 
     public Duty_roster(String start_date, String end_date,
                        String team_name, Shift shift, String branch_name) {

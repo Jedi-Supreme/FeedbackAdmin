@@ -12,6 +12,7 @@ import com.softedge.feedbackadmin.R;
 import com.softedge.feedbackadmin.common;
 import com.softedge.feedbackadmin.databases.AppDatabase;
 import com.softedge.feedbackadmin.models.Company_details;
+import com.softedge.feedbackadmin.models.Duty_roster;
 
 import java.lang.ref.WeakReference;
 
@@ -83,6 +84,11 @@ public class Dashboard extends AppCompatActivity {
 
                 break;
 
+            case R.id.bt_dash_duty_roster:
+                toRoster();
+                break;
+
+
         }
     }
     //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-CLICK LISTENERS-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -91,6 +97,11 @@ public class Dashboard extends AppCompatActivity {
     void toReport(){
         Intent report_intent = new Intent(getApplicationContext(),ReportsActivity.class);
         startActivity(report_intent);
+    }
+
+    void toRoster(){
+        Intent roster_intent = new Intent(getApplicationContext(), Duty_RosterActivity.class);
+        startActivity(roster_intent);
     }
     //----------------------------------------------INTENTS-----------------------------------------
 
