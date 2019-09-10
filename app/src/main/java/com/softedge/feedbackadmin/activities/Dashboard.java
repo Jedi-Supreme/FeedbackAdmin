@@ -12,7 +12,6 @@ import com.softedge.feedbackadmin.R;
 import com.softedge.feedbackadmin.common;
 import com.softedge.feedbackadmin.databases.AppDatabase;
 import com.softedge.feedbackadmin.models.Company_details;
-import com.softedge.feedbackadmin.models.Duty_roster;
 
 import java.lang.ref.WeakReference;
 

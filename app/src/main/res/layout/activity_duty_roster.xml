@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:windowBackground"
     tools:context=".activities.Duty_RosterActivity">
 
     <fragment
-        android:id="@+id/frag_roster_view"
+        android:id="@+id/frag_roster_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:name="com.softedge.feedbackadmin.fragments.Branch_list_fragment"

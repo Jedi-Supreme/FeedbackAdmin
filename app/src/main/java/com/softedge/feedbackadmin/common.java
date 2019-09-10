@@ -24,6 +24,8 @@ public class common {
 
     public static final Boolean GOOD_REVIEW = true;
     public static final Boolean BAD_REVIEW = false;
+    public static final int ROSTER_LIST = 12;
+    public static final String date_format = "dd-MM-yyyy";
 
     private static String time_to_date(String timeMillis){
 

@@ -44,7 +44,8 @@
     <string name="feedback_lbl">Feedback</string>
     <string name="search_lbl">Search</string>
     <string name="account_lbl">Account</string>
-    <string name="duty_rosters">Duty Rosters</string>
     <string name="team_name_lbl">Team name</string>
     <string name="add_team_lbl">Add Team</string>
+    <string name="duty_rosters_lbl">Duty Rosters</string>
+    <string name="branches_list">Branches List</string>
 </resources>
