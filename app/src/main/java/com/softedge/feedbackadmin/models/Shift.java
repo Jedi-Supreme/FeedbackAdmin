@@ -4,10 +4,13 @@ import android.arch.persistence.room.ColumnInfo;
 
 public class Shift {
 
-    @ColumnInfo(name = "start_time")
+    public static final String COLUMN_START_TIME = "start_time";
+    public static final String COLUMN_END_TIME = "end_time";
+
+    @ColumnInfo(name = COLUMN_START_TIME)
     private String start_time;
 
-    @ColumnInfo(name = "end_time")
+    @ColumnInfo(name = COLUMN_END_TIME)
     private String end_time;
 
     public Shift(String start_time, String end_time) {

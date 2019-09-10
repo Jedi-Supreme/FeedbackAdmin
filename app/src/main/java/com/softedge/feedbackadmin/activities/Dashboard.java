@@ -74,7 +74,7 @@ public class Dashboard extends AppCompatActivity {
                 break;
             case R.id.bt_dash_logout:
 
-                for (String branchname : appDB.feedbackDAO().branch_names()){
+                for (String branchname : appDB.feedbackDAO().getTeamNames("Akosombo")){
                     Toast.makeText(getApplicationContext(),"Branch count: " + branchname
                                     + " - " + appDB.feedbackDAO().count_branchName(branchname)
                             ,Toast.LENGTH_SHORT).show();

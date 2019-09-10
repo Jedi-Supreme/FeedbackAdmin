@@ -1,13 +1,16 @@
 package com.softedge.feedbackadmin.fragments;
 
+import android.app.ActionBar;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.widget.AppCompatSpinner;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +19,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.softedge.feedbackadmin.R;
+import com.softedge.feedbackadmin.adapters.frag_Bnames_Adapter;
 import com.softedge.feedbackadmin.common;
 import com.softedge.feedbackadmin.databases.AppDatabase;
 import com.softedge.feedbackadmin.models.Branch_data;
@@ -40,8 +44,9 @@ public class Add_team_fragment extends Fragment implements View.OnClickListener 
 
     ViewGroup parent_view;
 
-    Duty_roster roster;
     String bname;
+
+    AppDatabase appDB;
 
     DatePickerDialog startDate_picker, endDate_picker;
 
@@ -51,8 +56,6 @@ public class Add_team_fragment extends Fragment implements View.OnClickListener 
 
         View view = inflater.inflate(R.layout.frag_add_team,container,false);
         parent_view = container;
-
-        roster = new Duty_roster();
 
         if (getArguments()!=null){
             bname = getArguments().getString(Branch_data.COLUMN_BRANCHNAME);
@@ -77,10 +80,28 @@ public class Add_team_fragment extends Fragment implements View.OnClickListener 
         endDate_picker = new DatePickerDialog(parent_view.getContext(), R.style.DatePickerTheme, end_dateSetListener,
                 calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
+        appDB = AppDatabase.getInstance(parent_view.getContext());
+
+        try {
+            refresh_list();
+        }catch (Exception ignored){}
+
         return  view;
     }
 
     //---------------------------------------OVERRIDE METHOD----------------------------------------
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        ActionBar actionBar = getActivity().getActionBar();
+
+        if (actionBar!= null){
+            actionBar.setTitle("Add Team");
+        }
+    }
+
     @Override
     public void onClick(View v) {
 
@@ -119,8 +140,6 @@ public class Add_team_fragment extends Fragment implements View.OnClickListener 
     //======================================DEFINED METHODS=========================================
     void testinput(){
 
-        AppDatabase appDB = AppDatabase.getInstance(parent_view.getContext());
-
         if (et_team_name.getText().toString().isEmpty() || et_team_name.getText().toString().equals("")){
             common.Mysnackbar(parent_view,"Enter Team name", Snackbar.LENGTH_SHORT).show();
         }else if (et_team_start.getText().toString().isEmpty() || et_team_start.getText().toString().equals("")){
@@ -133,33 +152,47 @@ public class Add_team_fragment extends Fragment implements View.OnClickListener 
             common.Mysnackbar(parent_view,"Invalid Dates entered", Snackbar.LENGTH_SHORT).show();
         }else {
 
+            Duty_roster roster;
             Shift team_shift;
-
-            roster.setTeam_name(et_team_name.getText().toString());
-            roster.setStart_date(et_team_start.getText().toString());
-            roster.setEnd_date(et_team_end.getText().toString());
 
             switch (sp_team_shift.getSelectedItemPosition()){
 
                 case 1:
                     team_shift = new Morning_shift();
-                    roster.setShift(team_shift);
+                    roster = new Duty_roster(
+                            et_team_start.getText().toString(),
+                            et_team_end.getText().toString(),
+                            et_team_name.getText().toString(),team_shift,bname);
+
+                    appDB.feedbackDAO().addDuty_roster(roster);
+                    refresh_list();
                     break;
 
                 case 2:
                     team_shift = new Afternoon_shift();
-                    roster.setShift(team_shift);
+                    roster = new Duty_roster(
+                            et_team_start.getText().toString(),
+                            et_team_end.getText().toString(),
+                            et_team_name.getText().toString(),team_shift,bname);
+
+                    appDB.feedbackDAO().addDuty_roster(roster);
+                    refresh_list();
                     break;
 
                 case 3:
                     team_shift = new Night_shift();
-                    roster.setShift(team_shift);
+                    roster = new Duty_roster(
+                            et_team_start.getText().toString(),
+                            et_team_end.getText().toString(),
+                            et_team_name.getText().toString(),team_shift,bname);
+
+                    appDB.feedbackDAO().addDuty_roster(roster);
+                    refresh_list();
                     break;
 
             }
 
             //Todo add roster to DB and refresh recycler view
-            //appDB.feedbackDAO().addTeam_shift(roster);
 
             Toast.makeText(parent_view.getContext(),"Success",Toast.LENGTH_SHORT).show();
         }
@@ -169,7 +202,6 @@ public class Add_team_fragment extends Fragment implements View.OnClickListener 
     void pick_start_date(){
         startDate_picker.show();
     }
-
     void pick_end_date(){
         endDate_picker.show();
     }
@@ -208,7 +240,6 @@ public class Add_team_fragment extends Fragment implements View.OnClickListener 
             }
         }
     }
-
     public void showEndDate(int year, int month, int day) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(common.date_format, Locale.getDefault());
         SimpleDateFormat parseDateFormat = new SimpleDateFormat(common.date_format, Locale.getDefault());
@@ -262,6 +293,12 @@ public class Add_team_fragment extends Fragment implements View.OnClickListener 
             return false;
         }
 
+    }
+
+    void refresh_list(){
+        frag_Bnames_Adapter bnames_Adapter = new frag_Bnames_Adapter(appDB.feedbackDAO().getTeamNames(bname));
+        recy_add_team.setLayoutManager(new LinearLayoutManager(parent_view.getContext()));
+        recy_add_team.setAdapter(bnames_Adapter);
     }
     //======================================DEFINED METHODS=========================================
 }

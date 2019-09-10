@@ -6,6 +6,7 @@ import android.arch.persistence.room.Query;
 
 import com.softedge.feedbackadmin.models.Branch_data;
 import com.softedge.feedbackadmin.models.Duty_roster;
+import com.softedge.feedbackadmin.models.Shift;
 
 @Dao
 public interface Feedback_Access_Obj {
@@ -41,13 +42,29 @@ public interface Feedback_Access_Obj {
     @Insert
     void addFeedback(Branch_data branch_data);
 
-    @Insert
-    void addTeam_shift(Duty_roster duty_roster);
-
     @Query("DELETE FROM " + Branch_data.TABLE + " WHERE " + Branch_data.COLUMN_BRANCHNAME + " == :branchname")
     void delete_all_branchData(String branchname);
 
     @Query(selectTable + " WHERE :query")
     int custom_count_query(String query);
+
+    //==============================================================================================
+    //==============================================================================================
+
+    @Insert
+    void addDuty_roster(Duty_roster duty_roster);
+
+    //TODO WORK ON DUTY ROSTER QUERIES
+
+    @Query("SELECT DISTINCT " + Duty_roster.COLUMN_TEAM_NAME
+            + " FROM " + Duty_roster.TABLE + " WHERE " + Branch_data.COLUMN_BRANCHNAME + " == :branchname")
+    String[] getTeamNames(String branchname);
+
+    @Query("SELECT " + Duty_roster.COLUMN_TEAM_NAME + " FROM " + Duty_roster.TABLE
+            + " WHERE :date BETWEEN " + Duty_roster.COLUMN_START_DATE + " AND " + Duty_roster.COLUMN_END_DATE
+            + " AND :time BETWEEN " + Shift.COLUMN_START_TIME + " AND " + Shift.COLUMN_END_TIME)
+    String team_on_duty(String date, String time);
+
+
 
 }

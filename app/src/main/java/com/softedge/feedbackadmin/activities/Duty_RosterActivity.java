@@ -31,12 +31,6 @@ public class Duty_RosterActivity extends AppCompatActivity {
             }
         }
 
-
-            /*try {
-                Fragment fragment = new Add_team_fragment();
-                loadFragment(fragment);
-            }catch (Exception ignored){}*/
-
     }
     //====================================ON CREATE=================================================
 
@@ -52,13 +46,6 @@ public class Duty_RosterActivity extends AppCompatActivity {
         frag_transact.replace(R.id.frag_roster_container,fragment);
         frag_transact.addToBackStack(null);
         frag_transact.commit();
-    }
-
-    public void changeActivity_title(String title){
-
-        if (actionBar != null){
-            actionBar.setTitle(title);
-        }
     }
 
     public void loadRosters(){
