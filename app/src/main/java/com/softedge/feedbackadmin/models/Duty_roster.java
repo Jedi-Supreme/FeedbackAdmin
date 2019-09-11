@@ -3,17 +3,22 @@ package com.softedge.feedbackadmin.models;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
-@Entity(tableName = Duty_roster.TABLE)
+@Entity(tableName = Duty_roster.TABLE,
+        primaryKeys = {
+                Shift.COLUMN_SHIFT_NAME,
+                Duty_roster.COLUMN_ID,
+                Branch_data.COLUMN_BRANCHNAME})
 public class Duty_roster {
 
+    public static final String COLUMN_ID = Branch_data.COLUMN_ID;
     public static final String COLUMN_START_DATE = "start_date";
     public static final String COLUMN_END_DATE = "end_date";
     public static final String COLUMN_TEAM_NAME = "team_name";
     public static final String TABLE = "DUTY_ROSTER";
 
-    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = COLUMN_ID)
     private int id;
 
     @ColumnInfo(name = COLUMN_START_DATE)
@@ -26,13 +31,15 @@ public class Duty_roster {
     private String team_name;
 
     @Embedded
+    @NonNull
     private Shift shift;
 
+    @NonNull
     @ColumnInfo(name = Branch_data.COLUMN_BRANCHNAME)
     private String branch_name;
 
     public Duty_roster(String start_date, String end_date,
-                       String team_name, Shift shift, String branch_name) {
+                       String team_name, @NonNull Shift shift, String branch_name) {
         this.start_date = start_date;
         this.end_date = end_date;
         this.team_name = team_name;

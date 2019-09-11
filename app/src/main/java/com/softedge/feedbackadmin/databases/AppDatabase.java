@@ -8,8 +8,9 @@ import android.content.Context;
 import com.softedge.feedbackadmin.interfaces.Feedback_Access_Obj;
 import com.softedge.feedbackadmin.models.Branch_data;
 import com.softedge.feedbackadmin.models.Duty_roster;
+import com.softedge.feedbackadmin.models.Feedback_team_join;
 
-@Database(entities = {Branch_data.class, Duty_roster.class},exportSchema = false, version = 1)
+@Database(entities = {Branch_data.class, Duty_roster.class, Feedback_team_join.class},exportSchema = false, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase appDB_instance;

@@ -4,19 +4,21 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
-@Entity(tableName = "FEEDBACKS", indices = {@Index(value = {"timestamp"},unique = true)})
+@Entity(tableName = Branch_data.TABLE, indices = {@Index(value = {Branch_data.COLUMN_TIMESTAMP},unique = true)})
 public class Branch_data {
 
     public static final String TABLE = "FEEDBACKS";
     public static final String COLUMN_ID = "id";
-    private static final String COLUMN_TIMESTAMP = "timestamp";
+    public static final String COLUMN_TIMESTAMP = "timestamp";
     public static final String COLUMN_DATE = "date";
     public static final String COLUMN_FEEDBACKS = "feedbacks";
     public static final String COLUMN_BRANCHNAME = "branchname";
 
 
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = COLUMN_ID)
     private int id;
 
     @ColumnInfo(name = COLUMN_TIMESTAMP)
@@ -29,9 +31,10 @@ public class Branch_data {
     private Boolean userfeeds;
 
     @ColumnInfo(name = COLUMN_BRANCHNAME)
+    @NonNull
     private String branchname;
 
-    public Branch_data(String timestamp, String date, Boolean userfeeds, String branchname) {
+    public Branch_data(String timestamp, String date, Boolean userfeeds, @NonNull String branchname) {
         this.timestamp = timestamp;
         this.date = date;
         this.userfeeds = userfeeds;
@@ -77,4 +80,5 @@ public class Branch_data {
     public void setId(int id) {
         this.id = id;
     }
+
 }

@@ -19,7 +19,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.softedge.feedbackadmin.R;
-import com.softedge.feedbackadmin.adapters.frag_Bnames_Adapter;
+import com.softedge.feedbackadmin.adapters.duty_roster_recy_Adapter;
 import com.softedge.feedbackadmin.common;
 import com.softedge.feedbackadmin.databases.AppDatabase;
 import com.softedge.feedbackadmin.models.Branch_data;
@@ -189,12 +189,11 @@ public class Add_team_fragment extends Fragment implements View.OnClickListener 
                     appDB.feedbackDAO().addDuty_roster(roster);
                     refresh_list();
                     break;
-
             }
 
             //Todo add roster to DB and refresh recycler view
 
-            Toast.makeText(parent_view.getContext(),"Success",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(parent_view.getContext(),"Success",Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -296,9 +295,9 @@ public class Add_team_fragment extends Fragment implements View.OnClickListener 
     }
 
     void refresh_list(){
-        frag_Bnames_Adapter bnames_Adapter = new frag_Bnames_Adapter(appDB.feedbackDAO().getTeamNames(bname));
+        duty_roster_recy_Adapter dutyAdapter = new duty_roster_recy_Adapter(appDB.feedbackDAO().getDuty_rosters(bname));
         recy_add_team.setLayoutManager(new LinearLayoutManager(parent_view.getContext()));
-        recy_add_team.setAdapter(bnames_Adapter);
+        recy_add_team.setAdapter(dutyAdapter);
     }
     //======================================DEFINED METHODS=========================================
 }

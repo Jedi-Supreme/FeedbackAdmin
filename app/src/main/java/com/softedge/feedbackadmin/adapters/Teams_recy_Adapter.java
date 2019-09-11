@@ -15,11 +15,11 @@ import com.softedge.feedbackadmin.databases.AppDatabase;
 import java.lang.ref.WeakReference;
 import java.util.Locale;
 
-public class Branches_recy_Adapter extends RecyclerView.Adapter {
+public class Teams_recy_Adapter extends RecyclerView.Adapter {
 
     private String[] branch_names;
 
-    public Branches_recy_Adapter(String[] branch_names) {
+    public Teams_recy_Adapter(String[] branch_names) {
         this.branch_names = branch_names;
     }
 

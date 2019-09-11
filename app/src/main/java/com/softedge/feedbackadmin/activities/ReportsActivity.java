@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.softedge.feedbackadmin.R;
-import com.softedge.feedbackadmin.adapters.Branches_recy_Adapter;
+import com.softedge.feedbackadmin.adapters.Branch_report_recy_Adapter;
 import com.softedge.feedbackadmin.common;
 import com.softedge.feedbackadmin.databases.AppDatabase;
 import com.softedge.feedbackadmin.models.Company_details;
@@ -105,7 +105,7 @@ public class ReportsActivity extends AppCompatActivity {
     }
 
     void load_branch_calculations(){
-        Branches_recy_Adapter bAdapter = new Branches_recy_Adapter(appDB.feedbackDAO().branch_names());
+        Branch_report_recy_Adapter bAdapter = new Branch_report_recy_Adapter(appDB.feedbackDAO().branch_names());
         recy_sum_report.setLayoutManager(new LinearLayoutManager(weak_report.get()));
         recy_sum_report.setAdapter(bAdapter);
     }

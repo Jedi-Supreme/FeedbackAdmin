@@ -16,8 +16,10 @@ import com.softedge.feedbackadmin.databases.AppDatabase;
 import com.softedge.feedbackadmin.models.Branch_data;
 import com.softedge.feedbackadmin.models.feedback_class;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class common {
@@ -49,6 +51,19 @@ public class common {
 
     public static SharedPreferences app_pref(Context context){
         return context.getSharedPreferences("Feedback_pref", Context.MODE_PRIVATE);
+    }
+
+    public static String humanDate(String date){
+        SimpleDateFormat parseformat = new SimpleDateFormat(date_format,Locale.getDefault());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MMM/yyy",Locale.getDefault());
+
+        try {
+            Date date1 = parseformat.parse(date);
+            return dateFormat.format(date1);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public static void load_all_online_feedbacks(Context context, Boolean remove_listener){
