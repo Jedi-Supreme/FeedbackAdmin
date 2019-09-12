@@ -212,8 +212,8 @@ public class Add_team_fragment extends Fragment implements View.OnClickListener 
             -> showEndDate(year, month, dayOfMonth);
 
     public void showStartDate(int year, int month, int day) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(common.date_format, Locale.getDefault());
-        SimpleDateFormat parseDateFormat = new SimpleDateFormat(common.date_format, Locale.getDefault());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(common.db_date_format, Locale.getDefault());
+        SimpleDateFormat parseDateFormat = new SimpleDateFormat(common.db_date_format, Locale.getDefault());
         String userdate;
         Date date;
 
@@ -240,8 +240,8 @@ public class Add_team_fragment extends Fragment implements View.OnClickListener 
         }
     }
     public void showEndDate(int year, int month, int day) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(common.date_format, Locale.getDefault());
-        SimpleDateFormat parseDateFormat = new SimpleDateFormat(common.date_format, Locale.getDefault());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(common.db_date_format, Locale.getDefault());
+        SimpleDateFormat parseDateFormat = new SimpleDateFormat(common.db_date_format, Locale.getDefault());
         String userdate;
         Date date;
 
@@ -272,7 +272,7 @@ public class Add_team_fragment extends Fragment implements View.OnClickListener 
 
     Boolean validDate(String startdate, String enddate){
 
-        SimpleDateFormat parseDateFormat = new SimpleDateFormat(common.date_format, Locale.getDefault());
+        SimpleDateFormat parseDateFormat = new SimpleDateFormat(common.db_date_format, Locale.getDefault());
         //Toast.makeText(parent_view.getContext(),enddate,Toast.LENGTH_SHORT).show();
 
         Calendar calendar = Calendar.getInstance();
@@ -293,6 +293,8 @@ public class Add_team_fragment extends Fragment implements View.OnClickListener 
         }
 
     }
+
+    //TODO create input clearer method
 
     void refresh_list(){
         duty_roster_recy_Adapter dutyAdapter = new duty_roster_recy_Adapter(appDB.feedbackDAO().getDuty_rosters(bname));

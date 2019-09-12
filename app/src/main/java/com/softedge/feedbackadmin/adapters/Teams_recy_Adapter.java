@@ -19,6 +19,8 @@ public class Teams_recy_Adapter extends RecyclerView.Adapter {
 
     private String[] branch_names;
 
+    //TODO Work on adpter for team data grouping
+
     public Teams_recy_Adapter(String[] branch_names) {
         this.branch_names = branch_names;
     }

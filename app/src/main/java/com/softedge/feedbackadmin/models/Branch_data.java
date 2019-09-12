@@ -10,8 +10,8 @@ import android.support.annotation.NonNull;
 public class Branch_data {
 
     public static final String TABLE = "FEEDBACKS";
-    public static final String COLUMN_ID = "id";
-    public static final String COLUMN_TIMESTAMP = "timestamp";
+    static final String COLUMN_ID = "id";
+    static final String COLUMN_TIMESTAMP = "timestamp";
     public static final String COLUMN_DATE = "date";
     public static final String COLUMN_FEEDBACKS = "feedbacks";
     public static final String COLUMN_BRANCHNAME = "branchname";
@@ -34,7 +34,8 @@ public class Branch_data {
     @NonNull
     private String branchname;
 
-    public Branch_data(String timestamp, String date, Boolean userfeeds, @NonNull String branchname) {
+    public Branch_data(String timestamp, String date, Boolean userfeeds,
+                       @NonNull String branchname) {
         this.timestamp = timestamp;
         this.date = date;
         this.userfeeds = userfeeds;
@@ -65,11 +66,12 @@ public class Branch_data {
         this.userfeeds = userfeeds;
     }
 
+    @NonNull
     public String getBranchname() {
         return branchname;
     }
 
-    public void setBranchname(String branchname) {
+    public void setBranchname(@NonNull String branchname) {
         this.branchname = branchname;
     }
 

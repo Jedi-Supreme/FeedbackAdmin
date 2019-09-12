@@ -21,13 +21,14 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 public class common {
 
     public static final Boolean GOOD_REVIEW = true;
     public static final Boolean BAD_REVIEW = false;
     public static final int ROSTER_LIST = 12;
-    public static final String date_format = "dd-MM-yyyy";
+    public static final String db_date_format = "dd-MM-yyyy";
 
     private static String time_to_date(String timeMillis){
 
@@ -54,7 +55,7 @@ public class common {
     }
 
     public static String humanDate(String date){
-        SimpleDateFormat parseformat = new SimpleDateFormat(date_format,Locale.getDefault());
+        SimpleDateFormat parseformat = new SimpleDateFormat(db_date_format,Locale.getDefault());
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MMM/yyy",Locale.getDefault());
 
         try {
@@ -99,7 +100,7 @@ public class common {
                                                 String date = time_to_date(fb_class.getTime_stamp());
                                                 //Toast.makeText(context, "text: " + feed_snap.getKey(), Toast.LENGTH_SHORT).show();
                                                 Branch_data bdata = new Branch_data
-                                                        (fb_class.getTime_stamp(),date,fb_class.isUser_feedback(),branch_snap.getKey());
+                                                        (fb_class.getTime_stamp(),date,fb_class.isUser_feedback(), Objects.requireNonNull(branch_snap.getKey()));
                                                 try {
                                                     appDb.feedbackDAO().addFeedback(bdata);
                                                 }catch (Exception ignored){}

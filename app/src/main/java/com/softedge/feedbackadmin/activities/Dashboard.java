@@ -13,7 +13,6 @@ import com.softedge.feedbackadmin.common;
 import com.softedge.feedbackadmin.databases.AppDatabase;
 import com.softedge.feedbackadmin.models.Branch_data;
 import com.softedge.feedbackadmin.models.Company_details;
-import com.softedge.feedbackadmin.models.Duty_roster;
 import com.softedge.feedbackadmin.models.Feedback_team_join;
 
 import java.lang.ref.WeakReference;
@@ -81,11 +80,14 @@ public class Dashboard extends AppCompatActivity {
                     for (Branch_data b_feedback: branchFeedbackList){
 
                         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                        SimpleDateFormat db_date_format = new SimpleDateFormat(common.db_date_format,Locale.getDefault());
+
                         Calendar calendar = Calendar.getInstance();
                         calendar.setTimeInMillis(Long.parseLong(b_feedback.getTimestamp()));
 
                         String time = timeFormat.format(calendar.getTime());
-                        String teamname = appDB.feedbackDAO().team_on_duty(b_feedback.getDate(),time,b_feedback.getBranchname());
+                        String date = db_date_format.format(calendar.getTime());
+                        String teamname = appDB.feedbackDAO().team_on_duty(date,time,b_feedback.getBranchname());
 
                         Feedback_team_join team_joinObj = new Feedback_team_join(
                                 teamname,

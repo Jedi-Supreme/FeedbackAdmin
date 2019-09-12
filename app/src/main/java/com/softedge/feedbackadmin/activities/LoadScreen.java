@@ -1,6 +1,5 @@
 package com.softedge.feedbackadmin.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
@@ -19,15 +18,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.softedge.feedbackadmin.R;
 import com.softedge.feedbackadmin.common;
-import com.softedge.feedbackadmin.databases.AppDatabase;
-import com.softedge.feedbackadmin.models.Branch_data;
 import com.softedge.feedbackadmin.models.Company_details;
-import com.softedge.feedbackadmin.models.feedback_class;
 
 import java.lang.ref.WeakReference;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
 
 public class LoadScreen extends AppCompatActivity {
 

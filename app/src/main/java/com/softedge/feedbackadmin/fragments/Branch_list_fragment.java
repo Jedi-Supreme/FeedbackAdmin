@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.softedge.feedbackadmin.R;
-import com.softedge.feedbackadmin.activities.Duty_RosterActivity;
 import com.softedge.feedbackadmin.adapters.frag_Bnames_Adapter;
 import com.softedge.feedbackadmin.databases.AppDatabase;
 
