@@ -30,12 +30,16 @@
                 android:padding="@dimen/activity_padding">
 
                 <include
-                    android:id="@+id/sum_report"
+                    android:id="@+id/branch_sum_report"
                     layout="@layout/inc_frag_summary"/>
 
                 <include
                     android:id="@+id/cust_report"
                     layout="@layout/inc_frag_custom"/>
+
+                <include
+                    android:id="@+id/team_feedback_list"
+                    layout="@layout/frag_list_layout"/>
 
             </FrameLayout>
 

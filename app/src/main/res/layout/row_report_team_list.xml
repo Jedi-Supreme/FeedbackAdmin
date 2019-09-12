@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardElevation="@dimen/margin_tiny"
     app:cardCornerRadius="@dimen/margin_small"
+    app:cardElevation="@dimen/margin_tiny"
     app:cardUseCompatPadding="true">
 
     <LinearLayout
@@ -14,32 +14,25 @@
         android:orientation="vertical"
         android:padding="@dimen/margin_small">
 
-        <TableRow
-            android:padding="@dimen/margin_tiny"
+        <TextView
+            android:id="@+id/tv_teams_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            >
+            android:layout_marginEnd="@dimen/margin_tiny"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textSize="@dimen/med_text"
+            android:textStyle="bold" />
 
-            <TextView
-                android:layout_marginEnd="@dimen/margin_tiny"
-                android:layout_weight="1"
-                android:id="@+id/tv_row_branchname"
-                android:textSize="@dimen/med_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:textAllCaps="true"
-                android:textStyle="bold" />
-
-            <android.support.v7.widget.AppCompatImageButton
-                android:id="@+id/iv_row_branch_delete"
-                android:gravity="end"
-                android:background="@drawable/close_layer"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                />
-
-        </TableRow>
+        <TextView
+            android:id="@+id/tv_teams_branch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_tiny"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textSize="@dimen/normal_text"
+            android:textStyle="italic|bold" />
 
         <View
             android:layout_width="match_parent"
@@ -47,17 +40,15 @@
             android:background="@color/black" />
 
         <View
-            android:layout_marginTop= "2dp"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/black" />
 
         <TextView
-            android:id="@+id/tv_row_branch_total"
+            android:id="@+id/tv_teams_good"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_tiny"
-            />
+            android:layout_marginTop="@dimen/margin_tiny" />
 
         <View
             android:layout_width="match_parent"
@@ -65,23 +56,22 @@
             android:background="@color/black" />
 
         <TextView
-            android:id="@+id/tv_row_branch_good"
+            android:id="@+id/tv_teams_bad"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_tiny"
-            />
+            android:layout_marginTop="@dimen/margin_tiny" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_marginTop="2dp"
             android:background="@color/black" />
 
         <TextView
-            android:id="@+id/tv_row_branch_bad"
+            android:id="@+id/tv_teams_total"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_tiny"
-            />
+            android:layout_marginTop="@dimen/margin_tiny" />
 
 
     </LinearLayout>

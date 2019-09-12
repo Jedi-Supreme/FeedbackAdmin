@@ -3,21 +3,21 @@ package com.softedge.feedbackadmin.models;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Index;
+import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
 @Entity(tableName = Duty_roster.TABLE,
-        primaryKeys = {
-                Shift.COLUMN_SHIFT_NAME,
-                Duty_roster.COLUMN_ID,
-                Branch_data.COLUMN_BRANCHNAME})
+        indices = {@Index(value = Shift.COLUMN_SHIFT_NAME)})
 public class Duty_roster {
 
-    public static final String COLUMN_ID = Branch_data.COLUMN_ID;
+    private static final String COLUMN_ID = Branch_data.COLUMN_ID;
     public static final String COLUMN_START_DATE = "start_date";
     public static final String COLUMN_END_DATE = "end_date";
     public static final String COLUMN_TEAM_NAME = "team_name";
     public static final String TABLE = "DUTY_ROSTER";
 
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = COLUMN_ID)
     private int id;
 
@@ -39,7 +39,7 @@ public class Duty_roster {
     private String branch_name;
 
     public Duty_roster(String start_date, String end_date,
-                       String team_name, @NonNull Shift shift, String branch_name) {
+                       String team_name, @NonNull Shift shift, @NonNull String branch_name) {
         this.start_date = start_date;
         this.end_date = end_date;
         this.team_name = team_name;
@@ -71,11 +71,12 @@ public class Duty_roster {
         this.team_name = team_name;
     }
 
+    @NonNull
     public Shift getShift() {
         return shift;
     }
 
-    public void setShift(Shift shift) {
+    public void setShift(@NonNull Shift shift) {
         this.shift = shift;
     }
 
@@ -87,11 +88,12 @@ public class Duty_roster {
         this.id = id;
     }
 
+    @NonNull
     public String getBranch_name() {
         return branch_name;
     }
 
-    public void setBranch_name(String branch_name) {
+    public void setBranch_name(@NonNull String branch_name) {
         this.branch_name = branch_name;
     }
 }

@@ -2,14 +2,14 @@ package com.softedge.feedbackadmin.interfaces;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
 import com.softedge.feedbackadmin.models.Branch_data;
 import com.softedge.feedbackadmin.models.Duty_roster;
-import com.softedge.feedbackadmin.models.Feedback_team_join;
+import com.softedge.feedbackadmin.models.Team_Feedback_join;
 import com.softedge.feedbackadmin.models.Shift;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Dao
@@ -48,7 +48,7 @@ public interface Feedback_Access_Obj {
     @Query("SELECT * FROM " + Branch_data.TABLE + " WHERE " + Branch_data.COLUMN_BRANCHNAME + " == :branchname ")
     List<Branch_data> branch_feedbacks(String branchname);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void addFeedback(Branch_data branch_data);
 
     @Query("DELETE FROM " + Branch_data.TABLE + " WHERE " + Branch_data.COLUMN_BRANCHNAME + " == :branchname")
@@ -60,14 +60,17 @@ public interface Feedback_Access_Obj {
 
 
     //===========================================DUTY ROSTER========================================
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void addDuty_roster(Duty_roster duty_roster);
 
-    //TODO WORK ON DUTY ROSTER QUERIES
+    @Query("SELECT DISTINCT " + Branch_data.COLUMN_BRANCHNAME + " FROM " + Duty_roster.TABLE
+            + " WHERE " + Duty_roster.COLUMN_TEAM_NAME + " == :teamName ORDER BY " + Branch_data.COLUMN_BRANCHNAME + " ASC")
+    String branchName(String teamName);
 
     @Query("SELECT DISTINCT * FROM " + Duty_roster.TABLE + " WHERE " + Branch_data.COLUMN_BRANCHNAME + " == :branchname")
     List<Duty_roster> getDuty_rosters(String branchname);
 
+    //For matching team and populating join table
     @Query("SELECT " + Duty_roster.COLUMN_TEAM_NAME + " FROM " + Duty_roster.TABLE
             + " WHERE :date BETWEEN " + Duty_roster.COLUMN_START_DATE + " AND " + Duty_roster.COLUMN_END_DATE
             + " AND :time BETWEEN " + Shift.COLUMN_START_TIME + " AND " + Shift.COLUMN_END_TIME + " AND "
@@ -76,21 +79,26 @@ public interface Feedback_Access_Obj {
     //===========================================DUTY ROSTER========================================
 
     //=======================================FEEDBACK ROSTER JOIN===================================
-    @Insert
-    void insert_teamFeedback(Feedback_team_join team_feedback);
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insert_teamFeedback(Team_Feedback_join team_feedback);
 
-    @Query("SELECT DISTINCT " + Feedback_team_join.COLUMN_TEAM_NAME + " FROM " + Feedback_team_join.TABLE)
-    String[] distinct_teamname();
+    @Query("SELECT DISTINCT " + Team_Feedback_join.COLUMN_TEAM_NAME + " FROM " + Team_Feedback_join.TABLE + " ORDER BY "
+            + Branch_data.COLUMN_BRANCHNAME + " ASC")
+    List<String> distinct_teamname();
 
-    @Query("SELECT * FROM " + Feedback_team_join.TABLE)
-    Feedback_team_join[] getTeamRosters();
+    //@Query("SELECT DISTINCT * FROM " + Duty_roster.TABLE + " WHERE " + Branch_data.COLUMN_BRANCHNAME + " == :branchname")
+    //String[] distinct_team_name_by_branch(String branchname);
 
-    @Query("SELECT COUNT(*) FROM " + Feedback_team_join.TABLE +  " WHERE " + Feedback_team_join.COLUMN_TEAM_NAME + " == :teamName")
-    int count_byTeamName(String teamName);
+    @Query("SELECT COUNT(*) FROM " + Team_Feedback_join.TABLE + " WHERE "
+            + Team_Feedback_join.COLUMN_TEAM_NAME + " == :teamName AND " + Team_Feedback_join.COLUMN_FEEDBACK + " == :feedback" )
+    int cont_team_feedback(String teamName,Boolean feedback);
 
-    @Query("SELECT COUNT(*) FROM " + Feedback_team_join.TABLE + " WHERE "
-            + Feedback_team_join.COLUMN_TEAM_NAME + " == :teamName AND " + Feedback_team_join.COLUMN_FEEDBACK + " == :feedback")
-    int count_feedback_team(String teamName, Boolean feedback);
+    @Query("SELECT * FROM " + Team_Feedback_join.TABLE)
+    Team_Feedback_join[] getTeamFeedbacks();
+
+    @Query("SELECT COUNT(*) FROM " + Team_Feedback_join.TABLE +  " WHERE " + Team_Feedback_join.COLUMN_TEAM_NAME + " == :teamName")
+    int count_team_total(String teamName);
+
     //=======================================FEEDBACK ROSTER JOIN===================================
 
 

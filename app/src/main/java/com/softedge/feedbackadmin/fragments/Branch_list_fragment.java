@@ -29,14 +29,14 @@ public class Branch_list_fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.frag_branch_list,container,false);
+        View view = inflater.inflate(R.layout.frag_list_layout,container,false);
 
         weakcontext = new WeakReference<>(view.getContext());
 
         appDB = AppDatabase.getInstance(weakcontext.get());
 
 
-        recy_frag_branches = view.findViewById(R.id.recy_frag_branches);
+        recy_frag_branches = view.findViewById(R.id.recy_frag_listing);
 
         try {
             load_branches();

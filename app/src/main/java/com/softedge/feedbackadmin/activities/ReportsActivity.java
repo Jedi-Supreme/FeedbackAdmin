@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.softedge.feedbackadmin.R;
 import com.softedge.feedbackadmin.adapters.Branch_report_recy_Adapter;
+import com.softedge.feedbackadmin.adapters.Teams_feedback_Adapter;
 import com.softedge.feedbackadmin.common;
 import com.softedge.feedbackadmin.databases.AppDatabase;
 import com.softedge.feedbackadmin.models.Company_details;
@@ -21,15 +22,16 @@ import java.util.Locale;
 
 public class ReportsActivity extends AppCompatActivity {
 
-    final String SUMMARY_TAG = "Summary";
+    final String BRANCH_SUMMARY_TAG = "Branch Summary";
     final String CUSTOM_TAG = "Query";
+    final String TEAM_FEEDBACK_LIST = "Team Summary";
     TabHost report_tabhost;
     WeakReference<ReportsActivity> weak_report;
 
     AppDatabase appDB;
 
     TextView tv_sum_total_count, tv_sum_total_good, tv_sum_total_bad;
-    RecyclerView recy_sum_report;
+    RecyclerView recy_sum_report, recy_frag_listing;
 
     //=========================================ON CREATE============================================
     @Override
@@ -44,6 +46,7 @@ public class ReportsActivity extends AppCompatActivity {
         tv_sum_total_good = findViewById(R.id.tv_sum_total_good);
         tv_sum_total_bad = findViewById(R.id.tv_sum_total_bad);
         recy_sum_report  = findViewById(R.id.recy_sum_report);
+        recy_frag_listing = findViewById(R.id.recy_frag_listing);
 
         ActionBar actionBar = getSupportActionBar();
 
@@ -57,21 +60,26 @@ public class ReportsActivity extends AppCompatActivity {
         report_tabhost.setup();
 
         TabHost.TabSpec querySpec = report_tabhost.newTabSpec(CUSTOM_TAG);
-        TabHost.TabSpec sumSpec = report_tabhost.newTabSpec(SUMMARY_TAG);
+        TabHost.TabSpec teamSpec = report_tabhost.newTabSpec(TEAM_FEEDBACK_LIST);
+        TabHost.TabSpec sumSpec = report_tabhost.newTabSpec(BRANCH_SUMMARY_TAG);
 
         querySpec.setIndicator(CUSTOM_TAG);
-        sumSpec.setIndicator(SUMMARY_TAG);
+        teamSpec.setIndicator(TEAM_FEEDBACK_LIST);
+        sumSpec.setIndicator(BRANCH_SUMMARY_TAG);
 
         querySpec.setContent(R.id.cust_report);
-        sumSpec.setContent(R.id.sum_report);
+        teamSpec.setContent(R.id.team_feedback_list);
+        sumSpec.setContent(R.id.branch_sum_report);
 
         report_tabhost.addTab(sumSpec);
+        report_tabhost.addTab(teamSpec);
         report_tabhost.addTab(querySpec);
         //------------------------------------------TAB HOST----------------------------------------
 
 
         try {
             show_calculations();
+            load_team_feedback_Calclations();
         }catch (Exception e){
             Toast.makeText(getApplicationContext(), "Error showing calculations: " + e.toString(), Toast.LENGTH_LONG).show();
         }
@@ -110,5 +118,10 @@ public class ReportsActivity extends AppCompatActivity {
         recy_sum_report.setAdapter(bAdapter);
     }
 
+    void load_team_feedback_Calclations(){
+        Teams_feedback_Adapter teams_feedback_adapter = new Teams_feedback_Adapter(appDB.feedbackDAO().distinct_teamname());
+        recy_frag_listing.setLayoutManager(new LinearLayoutManager(weak_report.get()));
+        recy_frag_listing.setAdapter(teams_feedback_adapter);
+    }
     //-----------------------------------------------DEFINED METHODS--------------------------------
 }

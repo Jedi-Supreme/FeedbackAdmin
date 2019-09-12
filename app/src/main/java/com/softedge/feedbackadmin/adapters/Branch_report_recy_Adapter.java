@@ -27,7 +27,7 @@ public class Branch_report_recy_Adapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.row_report_listitem, parent, false);
+                .inflate(R.layout.row_report_branch_list, parent, false);
         return new branchnames_list_holder(view);
     }
 

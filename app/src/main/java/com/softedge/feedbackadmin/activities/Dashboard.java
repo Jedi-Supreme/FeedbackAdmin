@@ -13,7 +13,7 @@ import com.softedge.feedbackadmin.common;
 import com.softedge.feedbackadmin.databases.AppDatabase;
 import com.softedge.feedbackadmin.models.Branch_data;
 import com.softedge.feedbackadmin.models.Company_details;
-import com.softedge.feedbackadmin.models.Feedback_team_join;
+import com.softedge.feedbackadmin.models.Team_Feedback_join;
 
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
@@ -71,8 +71,6 @@ public class Dashboard extends AppCompatActivity {
 
         new Thread(() -> {
 
-            try {
-
                 for (String branchname: appDB.feedbackDAO().branch_names()){
 
                     List<Branch_data> branchFeedbackList =  appDB.feedbackDAO().branch_feedbacks(branchname);
@@ -89,7 +87,7 @@ public class Dashboard extends AppCompatActivity {
                         String date = db_date_format.format(calendar.getTime());
                         String teamname = appDB.feedbackDAO().team_on_duty(date,time,b_feedback.getBranchname());
 
-                        Feedback_team_join team_joinObj = new Feedback_team_join(
+                        Team_Feedback_join team_joinObj = new Team_Feedback_join(
                                 teamname,
                                 b_feedback.getUserfeeds(),
                                 b_feedback.getBranchname(),b_feedback.getTimestamp());
@@ -97,15 +95,38 @@ public class Dashboard extends AppCompatActivity {
                         appDB.feedbackDAO().insert_teamFeedback(team_joinObj);
 
                     }
-
                 }
 
+        }).start();
 
-            }catch (Exception ignored){
+        /*for (String branchname: appDB.feedbackDAO().branch_names()){
+
+            List<Branch_data> branchFeedbackList =  appDB.feedbackDAO().branch_feedbacks(branchname);
+
+            for (Branch_data b_feedback: branchFeedbackList){
+
+                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                SimpleDateFormat db_date_format = new SimpleDateFormat(common.db_date_format,Locale.getDefault());
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(Long.parseLong(b_feedback.getTimestamp()));
+
+                String time = timeFormat.format(calendar.getTime());
+                String date = db_date_format.format(calendar.getTime());
+                String teamname = appDB.feedbackDAO().team_on_duty(date,time,b_feedback.getBranchname());
+
+                Team_Feedback_join team_joinObj = new Team_Feedback_join(
+                        teamname,
+                        b_feedback.getUserfeeds(),
+                        b_feedback.getBranchname(),b_feedback.getTimestamp());
+
+                appDB.feedbackDAO().insert_teamFeedback(team_joinObj);
+
+                Toast.makeText(getApplicationContext(),"Data: " + branchname, Toast.LENGTH_SHORT).show();
 
             }
 
-        }).start();
+        }*/
 
     }
 
@@ -124,29 +145,27 @@ public class Dashboard extends AppCompatActivity {
                 break;
 
             case R.id.bt_dash_settings:
-                Toast.makeText(getApplicationContext(),"Count: " + appDB.feedbackDAO().getTeamRosters().length,
+                Toast.makeText(getApplicationContext(),"Count: " + appDB.feedbackDAO().distinct_teamname().size(),
                         Toast.LENGTH_LONG).show();
-                /*for (Feedback_team_join join : appDB.feedbackDAO().getTeamRosters()){
+                /*for (Team_Feedback_join join : appDB.feedbackDAO().getTeamFeedbacks()){
 
                     if (join != null){
                         Toast.makeText(getApplicationContext(),
                                 "time: " + join.getTimeStamp() + "\n branch: " + join.getBranchName()
                                         + "\n feedback: " + join.getFeedBacks() + "\n Team: " + join.getTeamName()
-                                        + "\n Count: " + appDB.feedbackDAO().getTeamRosters().length, Toast.LENGTH_SHORT).show();
+                                        + "\n Count: " + appDB.feedbackDAO().getTeamFeedbacks().length, Toast.LENGTH_SHORT).show();
                     }
                 }*/
                 break;
 
-                //TODO debug date problem on team join table and design report view for teams
-
             case R.id.bt_dash_logout:
-                for (Feedback_team_join join : appDB.feedbackDAO().getTeamRosters()){
+                for (Team_Feedback_join join : appDB.feedbackDAO().getTeamFeedbacks()){
 
                     if (join != null){
                         Toast.makeText(getApplicationContext(),
                                 "time: " + join.getTimeStamp() + "\n branch: " + join.getBranchName()
                                         + "\n feedback: " + join.getFeedBacks() + "\n Team: " + join.getTeamName()
-                                        + "\n Count: " + appDB.feedbackDAO().getTeamRosters().length, Toast.LENGTH_SHORT).show();
+                                        + "\n Count: " + appDB.feedbackDAO().getTeamFeedbacks().length, Toast.LENGTH_SHORT).show();
                     }
                 }
                 break;
