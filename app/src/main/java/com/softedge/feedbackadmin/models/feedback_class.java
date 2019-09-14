@@ -6,6 +6,7 @@ public class feedback_class {
 
     private boolean user_feedback;
     private String time_stamp;
+    private String service_point;
 
     public feedback_class() {
     }
@@ -13,6 +14,12 @@ public class feedback_class {
     public feedback_class(boolean user_feedback, String time_stamp) {
         this.user_feedback = user_feedback;
         this.time_stamp = time_stamp;
+    }
+
+    public feedback_class(boolean user_feedback, String time_stamp, String service_point){
+        this.user_feedback = user_feedback;
+        this.time_stamp = time_stamp;
+        this.service_point = service_point;
     }
 
     public boolean isUser_feedback() {
@@ -29,5 +36,13 @@ public class feedback_class {
 
     public void setTime_stamp(String time_stamp) {
         this.time_stamp = time_stamp;
+    }
+
+    public String getService_point() {
+        return service_point;
+    }
+
+    public void setService_point(String service_point) {
+        this.service_point = service_point;
     }
 }

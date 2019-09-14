@@ -60,7 +60,7 @@ public interface Feedback_Access_Obj {
 
 
     //===========================================DUTY ROSTER========================================
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void addDuty_roster(Duty_roster duty_roster);
 
     @Query("SELECT DISTINCT " + Branch_data.COLUMN_BRANCHNAME + " FROM " + Duty_roster.TABLE
@@ -70,12 +70,23 @@ public interface Feedback_Access_Obj {
     @Query("SELECT DISTINCT * FROM " + Duty_roster.TABLE + " WHERE " + Branch_data.COLUMN_BRANCHNAME + " == :branchname")
     List<Duty_roster> getDuty_rosters(String branchname);
 
+
+    @Query("SELECT * FROM " + Duty_roster.TABLE)
+    List<Duty_roster> getAllDuty_rosters();
+
+    //TODO FIX SHIFT QUERY AND IMPROVE APP PERFORMANCE
     //For matching team and populating join table
     @Query("SELECT " + Duty_roster.COLUMN_TEAM_NAME + " FROM " + Duty_roster.TABLE
             + " WHERE :date BETWEEN " + Duty_roster.COLUMN_START_DATE + " AND " + Duty_roster.COLUMN_END_DATE
             + " AND :time BETWEEN " + Shift.COLUMN_START_TIME + " AND " + Shift.COLUMN_END_TIME + " AND "
             + Branch_data.COLUMN_BRANCHNAME + " == :branchname")
     String team_on_duty(String date, String time, String branchname);
+
+    @Query("SELECT " + Duty_roster.COLUMN_TEAM_NAME + " FROM " + Duty_roster.TABLE
+            + " WHERE " + Branch_data.COLUMN_BRANCHNAME + " LIKE :branchname" + " AND :date BETWEEN " + Duty_roster.COLUMN_START_DATE + " AND " + Duty_roster.COLUMN_END_DATE
+            + " AND (CAST(" + Shift.COLUMN_START_TIME + " AS TIME ) >= :time) OR  (CAST(" + Shift.COLUMN_END_TIME + " AS TIME ) <= " + Shift.COLUMN_END_TIME + ")"
+            )
+    String night_duty(String date, String time, String branchname);
     //===========================================DUTY ROSTER========================================
 
     //=======================================FEEDBACK ROSTER JOIN===================================

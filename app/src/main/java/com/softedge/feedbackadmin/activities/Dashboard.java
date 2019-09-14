@@ -13,9 +13,12 @@ import com.softedge.feedbackadmin.common;
 import com.softedge.feedbackadmin.databases.AppDatabase;
 import com.softedge.feedbackadmin.models.Branch_data;
 import com.softedge.feedbackadmin.models.Company_details;
+import com.softedge.feedbackadmin.models.Duty_roster;
+import com.softedge.feedbackadmin.models.Shifts.Afternoon_shift;
 import com.softedge.feedbackadmin.models.Team_Feedback_join;
 
 import java.lang.ref.WeakReference;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
  import java.util.Calendar;
 import java.util.List;
@@ -83,16 +86,38 @@ public class Dashboard extends AppCompatActivity {
                         Calendar calendar = Calendar.getInstance();
                         calendar.setTimeInMillis(Long.parseLong(b_feedback.getTimestamp()));
 
+                        Afternoon_shift afternoon_shift = new Afternoon_shift();
+
                         String time = timeFormat.format(calendar.getTime());
                         String date = db_date_format.format(calendar.getTime());
-                        String teamname = appDB.feedbackDAO().team_on_duty(date,time,b_feedback.getBranchname());
 
-                        Team_Feedback_join team_joinObj = new Team_Feedback_join(
-                                teamname,
-                                b_feedback.getUserfeeds(),
-                                b_feedback.getBranchname(),b_feedback.getTimestamp());
+                        try {
+                            if (calendar.getTime().after(timeFormat.parse(afternoon_shift.getEnd_time()))){
+                                String teamname = appDB.feedbackDAO().night_duty(date,time,b_feedback.getBranchname());
 
-                        appDB.feedbackDAO().insert_teamFeedback(team_joinObj);
+                                Team_Feedback_join team_joinObj = new Team_Feedback_join(
+                                        teamname,
+                                        b_feedback.getUserfeeds(),
+                                        b_feedback.getBranchname(),b_feedback.getTimestamp());
+
+                                appDB.feedbackDAO().insert_teamFeedback(team_joinObj);
+
+                            }else {
+                                String teamname = appDB.feedbackDAO().team_on_duty(date,time,b_feedback.getBranchname());
+
+                                Team_Feedback_join team_joinObj = new Team_Feedback_join(
+                                        teamname,
+                                        b_feedback.getUserfeeds(),
+                                        b_feedback.getBranchname(),b_feedback.getTimestamp());
+
+                                appDB.feedbackDAO().insert_teamFeedback(team_joinObj);
+                            }
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                            //Toast.makeText(getApplicationContext(), "Time parse error: "
+                              //      + e.toString(),Toast.LENGTH_LONG).show();
+                        }
+
 
                     }
                 }
@@ -113,16 +138,41 @@ public class Dashboard extends AppCompatActivity {
 
                 String time = timeFormat.format(calendar.getTime());
                 String date = db_date_format.format(calendar.getTime());
-                String teamname = appDB.feedbackDAO().team_on_duty(date,time,b_feedback.getBranchname());
 
-                Team_Feedback_join team_joinObj = new Team_Feedback_join(
-                        teamname,
-                        b_feedback.getUserfeeds(),
-                        b_feedback.getBranchname(),b_feedback.getTimestamp());
+                Afternoon_shift afternoon_shift = new Afternoon_shift();
 
-                appDB.feedbackDAO().insert_teamFeedback(team_joinObj);
+                try {
+                    if (calendar.getTime().after(timeFormat.parse(afternoon_shift.getEnd_time()))){
+                        String teamname = appDB.feedbackDAO().night_duty(date,time,b_feedback.getBranchname());
 
-                Toast.makeText(getApplicationContext(),"Data: " + branchname, Toast.LENGTH_SHORT).show();
+                        Team_Feedback_join team_joinObj = new Team_Feedback_join(
+                                teamname,
+                                b_feedback.getUserfeeds(),
+                                b_feedback.getBranchname(),b_feedback.getTimestamp());
+
+                        appDB.feedbackDAO().insert_teamFeedback(team_joinObj);
+                        Toast.makeText(getApplicationContext(),"Data: " + teamname, Toast.LENGTH_SHORT).show();
+
+                    }else {
+                        String teamname = appDB.feedbackDAO().team_on_duty(date,time,b_feedback.getBranchname());
+
+                        Team_Feedback_join team_joinObj = new Team_Feedback_join(
+                                teamname,
+                                b_feedback.getUserfeeds(),
+                                b_feedback.getBranchname(),b_feedback.getTimestamp());
+
+                        appDB.feedbackDAO().insert_teamFeedback(team_joinObj);
+                        Toast.makeText(getApplicationContext(),"Data: " + teamname, Toast.LENGTH_SHORT).show();
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Time parse error: "
+                            + e.toString(),Toast.LENGTH_LONG).show();
+                }
+
+                //TODO FIX TEAM NAME FETCH
+
+
 
             }
 
@@ -145,17 +195,21 @@ public class Dashboard extends AppCompatActivity {
                 break;
 
             case R.id.bt_dash_settings:
-                Toast.makeText(getApplicationContext(),"Count: " + appDB.feedbackDAO().distinct_teamname().size(),
-                        Toast.LENGTH_LONG).show();
-                /*for (Team_Feedback_join join : appDB.feedbackDAO().getTeamFeedbacks()){
+                //Toast.makeText(getApplicationContext(),"Count: " + appDB.feedbackDAO().getAllDuty_rosters().size(),
+                 //       Toast.LENGTH_LONG).show();
+                for (Duty_roster roster : appDB.feedbackDAO().getAllDuty_rosters()){
 
-                    if (join != null){
-                        Toast.makeText(getApplicationContext(),
-                                "time: " + join.getTimeStamp() + "\n branch: " + join.getBranchName()
-                                        + "\n feedback: " + join.getFeedBacks() + "\n Team: " + join.getTeamName()
-                                        + "\n Count: " + appDB.feedbackDAO().getTeamFeedbacks().length, Toast.LENGTH_SHORT).show();
-                    }
-                }*/
+                    String test = "NAME: " + roster.getTeam_name() +
+                            " \n StartDate: " + roster.getStart_date() +
+                            "\n EndDate: " + roster.getEnd_date() +
+                            "\n StartTime: " + roster.getShift().getStart_time() +
+                            "\n EndTime: " + roster.getShift().getEnd_time();
+
+
+                    Toast.makeText(getApplicationContext(),test ,
+                           Toast.LENGTH_SHORT).show();
+
+                }
                 break;
 
             case R.id.bt_dash_logout:

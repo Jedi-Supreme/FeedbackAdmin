@@ -24,6 +24,7 @@ public class ReportsActivity extends AppCompatActivity {
 
     final String BRANCH_SUMMARY_TAG = "Branch Summary";
     final String CUSTOM_TAG = "Query";
+    final String SERVICE_POINT = "Service Points";
     final String TEAM_FEEDBACK_LIST = "Team Summary";
     TabHost report_tabhost;
     WeakReference<ReportsActivity> weak_report;
@@ -31,7 +32,7 @@ public class ReportsActivity extends AppCompatActivity {
     AppDatabase appDB;
 
     TextView tv_sum_total_count, tv_sum_total_good, tv_sum_total_bad;
-    RecyclerView recy_sum_report, recy_frag_listing;
+    RecyclerView recy_sum_report, recy_frag_listing, recy_serv_point;
 
     //=========================================ON CREATE============================================
     @Override
@@ -47,6 +48,7 @@ public class ReportsActivity extends AppCompatActivity {
         tv_sum_total_bad = findViewById(R.id.tv_sum_total_bad);
         recy_sum_report  = findViewById(R.id.recy_sum_report);
         recy_frag_listing = findViewById(R.id.recy_frag_listing);
+        recy_serv_point = findViewById(R.id.recy_frag_serv_point);
 
         ActionBar actionBar = getSupportActionBar();
 
@@ -59,21 +61,21 @@ public class ReportsActivity extends AppCompatActivity {
         report_tabhost = findViewById(R.id.report_tabhost);
         report_tabhost.setup();
 
-        TabHost.TabSpec querySpec = report_tabhost.newTabSpec(CUSTOM_TAG);
+        TabHost.TabSpec serc_ptSpec = report_tabhost.newTabSpec(SERVICE_POINT);
         TabHost.TabSpec teamSpec = report_tabhost.newTabSpec(TEAM_FEEDBACK_LIST);
         TabHost.TabSpec sumSpec = report_tabhost.newTabSpec(BRANCH_SUMMARY_TAG);
 
-        querySpec.setIndicator(CUSTOM_TAG);
+        serc_ptSpec.setIndicator(SERVICE_POINT);
         teamSpec.setIndicator(TEAM_FEEDBACK_LIST);
         sumSpec.setIndicator(BRANCH_SUMMARY_TAG);
 
-        querySpec.setContent(R.id.cust_report);
+        serc_ptSpec.setContent(R.id.serv_point_report);
         teamSpec.setContent(R.id.team_feedback_list);
         sumSpec.setContent(R.id.branch_sum_report);
 
         report_tabhost.addTab(sumSpec);
         report_tabhost.addTab(teamSpec);
-        report_tabhost.addTab(querySpec);
+        report_tabhost.addTab(serc_ptSpec);
         //------------------------------------------TAB HOST----------------------------------------
 
 

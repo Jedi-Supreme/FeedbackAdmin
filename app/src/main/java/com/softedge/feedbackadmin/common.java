@@ -94,13 +94,15 @@ public class common {
 
                                         for (DataSnapshot feed_snap : day_snap.getChildren()){
 
-                                            feedback_class fb_class = feed_snap.getValue(feedback_class.class);
+                                            feedback_class fb_obj = feed_snap.getValue(feedback_class.class);
 
-                                            if (fb_class != null){
-                                                String date = time_to_date(fb_class.getTime_stamp());
+                                            if (fb_obj != null){
+                                                String date = time_to_date(fb_obj.getTime_stamp());
                                                 //Toast.makeText(context, "text: " + feed_snap.getKey(), Toast.LENGTH_SHORT).show();
                                                 Branch_data bdata = new Branch_data
-                                                        (fb_class.getTime_stamp(),date,fb_class.isUser_feedback(), Objects.requireNonNull(branch_snap.getKey()));
+                                                        (fb_obj.getTime_stamp(),date,fb_obj.isUser_feedback(),
+                                                                Objects.requireNonNull(branch_snap.getKey()),
+                                                                fb_obj.getService_point());
                                                 try {
                                                     appDb.feedbackDAO().addFeedback(bdata);
                                                 }catch (Exception ignored){}

@@ -15,7 +15,7 @@ public class Branch_data {
     public static final String COLUMN_DATE = "date";
     public static final String COLUMN_FEEDBACKS = "feedbacks";
     public static final String COLUMN_BRANCHNAME = "branchname";
-
+    private static final String COLUMN_SERVICE_POINT = Company_details.SERVICE_POINT;
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = COLUMN_ID)
@@ -34,12 +34,16 @@ public class Branch_data {
     @NonNull
     private String branchname;
 
+    @ColumnInfo(name = COLUMN_SERVICE_POINT)
+    private String service_point;
+
     public Branch_data(String timestamp, String date, Boolean userfeeds,
-                       @NonNull String branchname) {
+                       @NonNull String branchname, String service_point) {
         this.timestamp = timestamp;
         this.date = date;
         this.userfeeds = userfeeds;
         this.branchname = branchname;
+        this.service_point = service_point;
     }
 
     public String getTimestamp() {
@@ -83,4 +87,11 @@ public class Branch_data {
         this.id = id;
     }
 
+    public String getService_point() {
+        return service_point;
+    }
+
+    public void setService_point(String service_point) {
+        this.service_point = service_point;
+    }
 }

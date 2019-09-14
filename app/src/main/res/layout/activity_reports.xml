@@ -34,8 +34,8 @@
                     layout="@layout/inc_frag_summary"/>
 
                 <include
-                    android:id="@+id/cust_report"
-                    layout="@layout/inc_frag_custom"/>
+                    android:id="@+id/serv_point_report"
+                    layout="@layout/inc_frag_serv_point"/>
 
                 <include
                     android:id="@+id/team_feedback_list"
