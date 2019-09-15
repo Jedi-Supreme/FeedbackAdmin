@@ -6,12 +6,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.softedge.feedbackadmin.R;
 import com.softedge.feedbackadmin.adapters.Branch_report_recy_Adapter;
+import com.softedge.feedbackadmin.adapters.ServPoint_report_Adapter;
 import com.softedge.feedbackadmin.adapters.Teams_feedback_Adapter;
 import com.softedge.feedbackadmin.common;
 import com.softedge.feedbackadmin.databases.AppDatabase;
@@ -23,13 +28,15 @@ import java.util.Locale;
 public class ReportsActivity extends AppCompatActivity {
 
     final String BRANCH_SUMMARY_TAG = "Branch Summary";
-    final String CUSTOM_TAG = "Query";
+    //final String CUSTOM_TAG = "Query";
     final String SERVICE_POINT = "Service Points";
     final String TEAM_FEEDBACK_LIST = "Team Summary";
     TabHost report_tabhost;
     WeakReference<ReportsActivity> weak_report;
 
     AppDatabase appDB;
+
+    View.OnClickListener delete_branch;
 
     TextView tv_sum_total_count, tv_sum_total_good, tv_sum_total_bad;
     RecyclerView recy_sum_report, recy_frag_listing, recy_serv_point;
@@ -81,7 +88,8 @@ public class ReportsActivity extends AppCompatActivity {
 
         try {
             show_calculations();
-            load_team_feedback_Calclations();
+             load_team_feedback_Calclations();
+            load_serv_point_calc();
         }catch (Exception e){
             Toast.makeText(getApplicationContext(), "Error showing calculations: " + e.toString(), Toast.LENGTH_LONG).show();
         }
@@ -124,6 +132,28 @@ public class ReportsActivity extends AppCompatActivity {
         Teams_feedback_Adapter teams_feedback_adapter = new Teams_feedback_Adapter(appDB.feedbackDAO().distinct_teamname());
         recy_frag_listing.setLayoutManager(new LinearLayoutManager(weak_report.get()));
         recy_frag_listing.setAdapter(teams_feedback_adapter);
+    }
+
+    void load_serv_point_calc(){
+        ServPoint_report_Adapter servPoint_adapter = new ServPoint_report_Adapter(appDB.feedbackDAO().service_points_list());
+        recy_serv_point.setLayoutManager(new LinearLayoutManager(weak_report.get()));
+        recy_serv_point.setAdapter(servPoint_adapter);
+    }
+
+    public void delete_function(String branchname){
+
+        //TODO ADD DIALOG FOR DELETING DATA
+
+        delete_branch = v -> appDB.feedbackDAO().delete_all_branchData(branchname);
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null){
+
+            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DatabaseReference del_ref = FirebaseDatabase.getInstance().getReference(getResources().getString(R.string.fb_feedback));
+            del_ref.child(uid).child(branchname).removeValue();
+        }
+
+        load_branch_calculations();
     }
     //-----------------------------------------------DEFINED METHODS--------------------------------
 }

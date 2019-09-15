@@ -12,8 +12,8 @@ import android.support.annotation.NonNull;
 public class Duty_roster {
 
     private static final String COLUMN_ID = Branch_data.COLUMN_ID;
-    public static final String COLUMN_START_DATE = "start_date";
-    public static final String COLUMN_END_DATE = "end_date";
+    private static final String COLUMN_START_DATE = "start_date";
+    private static final String COLUMN_END_DATE = "end_date";
     public static final String COLUMN_TEAM_NAME = "team_name";
     public static final String TABLE = "DUTY_ROSTER";
 
@@ -40,6 +40,8 @@ public class Duty_roster {
 
     public Duty_roster(String start_date, String end_date,
                        String team_name, @NonNull Shift shift, @NonNull String branch_name) {
+        //TODO MAKE START TIME AND END TIME FULL DATE-TIME STRING FOR BOTH START DATE AND END DATE,
+        // START TIME = STARTDATE+STARTTIME
         this.start_date = start_date;
         this.end_date = end_date;
         this.team_name = team_name;

@@ -6,9 +6,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.softedge.feedbackadmin.R;
+import com.softedge.feedbackadmin.activities.ReportsActivity;
 import com.softedge.feedbackadmin.common;
 import com.softedge.feedbackadmin.databases.AppDatabase;
 
@@ -41,9 +43,11 @@ public class Branch_report_recy_Adapter extends RecyclerView.Adapter {
         return branch_names.length;
     }
 
-    public class branchnames_list_holder extends RecyclerView.ViewHolder{
+    public class branchnames_list_holder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView tv_row_branchname, tv_row_branch_total, tv_row_branch_good, tv_row_branch_bad;
+        ImageView iv_row_branch_delete;
+        String bName;
         WeakReference<Context> weak_mcontext;
         AppDatabase appDb;
 
@@ -51,17 +55,20 @@ public class Branch_report_recy_Adapter extends RecyclerView.Adapter {
             super(itemView);
 
             weak_mcontext = new WeakReference<>(itemView.getContext());
-            //Todo initialise delete button and add functions
 
+            iv_row_branch_delete = itemView.findViewById(R.id.iv_row_branch_delete);
             tv_row_branchname = itemView.findViewById(R.id.tv_row_branchname);
             tv_row_branch_total = itemView.findViewById(R.id.tv_row_branch_total);
             tv_row_branch_good = itemView.findViewById(R.id.tv_row_branch_good);
             tv_row_branch_bad = itemView.findViewById(R.id.tv_row_branch_bad);
 
+            iv_row_branch_delete.setOnClickListener(this);
             appDb = AppDatabase.getInstance(weak_mcontext.get());
         }
 
         void bind_views(String branch) {
+
+            bName = branch;
 
             int total = appDb.feedbackDAO().count_branchName(branch);
             int branch_good = appDb.feedbackDAO().count_branchname_feedback(branch, common.GOOD_REVIEW);
@@ -81,7 +88,20 @@ public class Branch_report_recy_Adapter extends RecyclerView.Adapter {
                     + branch_bad + " (" + String.format(Locale.getDefault(),"%.2f",common.percentage(branch_bad,total)) + "%)";
             tv_row_branch_bad.setText(bad_perc);
 
+            if (branch_bad > 1){
+                tv_row_branch_bad.setTextColor(weak_mcontext.get().getResources().getColor(R.color.colorPrimary));
+            }else {
+                tv_row_branch_bad.setTextColor(weak_mcontext.get().getResources().getColor(R.color.green));
+            }
+
         }
 
+        @Override
+        public void onClick(View v) {
+
+            if (weak_mcontext.get() instanceof ReportsActivity){
+                ((ReportsActivity)weak_mcontext.get()).delete_function(bName);
+            }
+        }
     }
 }

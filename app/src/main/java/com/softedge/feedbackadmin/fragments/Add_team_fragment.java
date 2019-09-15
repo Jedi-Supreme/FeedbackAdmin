@@ -31,6 +31,7 @@ import com.softedge.feedbackadmin.models.Shifts.Night_shift;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -155,14 +156,24 @@ public class Add_team_fragment extends Fragment implements View.OnClickListener 
             Duty_roster roster;
             Shift team_shift;
 
+            String st, et;
+
             switch (sp_team_shift.getSelectedItemPosition()){
 
                 case 1:
                     team_shift = new Morning_shift();
+                     st = et_team_start.getText().toString() +" "+team_shift.getStart_time();
+                     et = et_team_end.getText().toString() + " " + team_shift.getEnd_time();
+
+                    team_shift.setStart_time(st);
+                    team_shift.setEnd_time(et);
+
                     roster = new Duty_roster(
                             et_team_start.getText().toString(),
                             et_team_end.getText().toString(),
-                            et_team_name.getText().toString(),team_shift,bname);
+                            et_team_name.getText().toString(),
+                            team_shift,
+                            bname);
 
                     appDB.feedbackDAO().addDuty_roster(roster);
                     refresh_list();
@@ -170,28 +181,47 @@ public class Add_team_fragment extends Fragment implements View.OnClickListener 
 
                 case 2:
                     team_shift = new Afternoon_shift();
+
+                    st = et_team_start.getText().toString() +" "+team_shift.getStart_time();
+                    et = et_team_end.getText().toString() + " " + team_shift.getEnd_time();
+
+                    team_shift.setStart_time(st);
+                    team_shift.setEnd_time(et);
+
                     roster = new Duty_roster(
                             et_team_start.getText().toString(),
                             et_team_end.getText().toString(),
-                            et_team_name.getText().toString(),team_shift,bname);
+                            et_team_name.getText().toString(),
+                            team_shift,
+                            bname);
 
                     appDB.feedbackDAO().addDuty_roster(roster);
                     refresh_list();
                     break;
 
                 case 3:
+
                     team_shift = new Night_shift();
+
+                    st = et_team_start.getText().toString() +" "+team_shift.getStart_time();
+                    et = nightEnd_date(et_team_end.getText().toString()) + " " + team_shift.getEnd_time();
+
+                    team_shift.setStart_time(st);
+                    team_shift.setEnd_time(et);
+
                     roster = new Duty_roster(
                             et_team_start.getText().toString(),
                             et_team_end.getText().toString(),
-                            et_team_name.getText().toString(),team_shift,bname);
+                            et_team_name.getText().toString(),
+                            team_shift,
+                            bname);
 
+                    //Toast.makeText(getActivity().getApplicationContext(),et,Toast.LENGTH_SHORT).show();
                     appDB.feedbackDAO().addDuty_roster(roster);
+
                     refresh_list();
                     break;
             }
-
-            //Todo add roster to DB and refresh recycler view
 
             //Toast.makeText(parent_view.getContext(),"Success",Toast.LENGTH_SHORT).show();
         }
@@ -218,8 +248,9 @@ public class Add_team_fragment extends Fragment implements View.OnClickListener 
         Date date;
 
         if (month+1<10){
-            userdate =  day + "-" + "0" + (month + 1) + "-" + year;
-            //et_reg_dob.setText(userdate);
+
+            userdate =  year + "-" + "0" + (month + 1) + "-" + day;
+
             try {
                 date = parseDateFormat.parse(userdate);
                 et_team_start.setText(simpleDateFormat.format(date));
@@ -228,8 +259,9 @@ public class Add_team_fragment extends Fragment implements View.OnClickListener 
             }
 
         }else{
-            userdate = day + "-" + (month + 1) + "-" + year;
-            //et_reg_dob.setText(userdate);
+
+            userdate = year + "-" + (month + 1) + "-" + day;
+
             try {
                 date = parseDateFormat.parse(userdate);
                 et_team_start.setText(simpleDateFormat.format(date));
@@ -246,8 +278,9 @@ public class Add_team_fragment extends Fragment implements View.OnClickListener 
         Date date;
 
         if (month+1<10){
-            userdate =  day + "-" + "0" + (month + 1) + "-" + year;
-            //et_reg_dob.setText(userdate);
+
+            userdate =  year + "-" + "0" + (month + 1) + "-" + day;
+
             try {
                 date = parseDateFormat.parse(userdate);
                 et_team_end.setText(simpleDateFormat.format(date));
@@ -257,8 +290,9 @@ public class Add_team_fragment extends Fragment implements View.OnClickListener 
             }
 
         }else{
-            userdate = day + "-" + (month + 1) + "-" + year;
-            //et_reg_dob.setText(userdate);
+
+            userdate = year + "-" + (month + 1) + "-" + day;
+
             try {
                 date = parseDateFormat.parse(userdate);
                 et_team_end.setText(simpleDateFormat.format(date));
@@ -294,6 +328,27 @@ public class Add_team_fragment extends Fragment implements View.OnClickListener 
 
     }
 
+    String nightEnd_date(String enddate){
+
+        SimpleDateFormat nightDate_format = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
+        Calendar calendar = Calendar.getInstance();
+
+
+        try {
+           Date date =  nightDate_format.parse(enddate);
+           calendar.setTime(date);
+           calendar.add(Calendar.DATE,1);
+
+           return nightDate_format.format(calendar.getTime());
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+
+            return null;
+        }
+
+    }
+
     //TODO create input clearer method
 
     void refresh_list(){
@@ -303,3 +358,4 @@ public class Add_team_fragment extends Fragment implements View.OnClickListener 
     }
     //======================================DEFINED METHODS=========================================
 }
+

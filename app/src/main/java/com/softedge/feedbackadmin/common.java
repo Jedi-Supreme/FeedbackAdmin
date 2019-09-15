@@ -22,13 +22,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class common {
 
     public static final Boolean GOOD_REVIEW = true;
     public static final Boolean BAD_REVIEW = false;
     public static final int ROSTER_LIST = 12;
-    public static final String db_date_format = "dd-MM-yyyy";
+    public static final String db_date_format = "yyyy-MM-dd";
 
     private static String time_to_date(String timeMillis){
 
@@ -36,7 +38,8 @@ public class common {
 
         calendar.setTimeInMillis(Long.parseLong(timeMillis));
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        //TODO CHANGE DATE TIME FORMAT FOR SAVING TO DB
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:MM:SS", Locale.getDefault());
 
         return  simpleDateFormat.format(calendar.getTime());
     }
@@ -76,59 +79,64 @@ public class common {
                         .getInstance()
                         .getReference(context.getResources().getString(R.string.fb_feedback));
 
-        new Thread(() -> {
-            if (FirebaseAuth.getInstance().getCurrentUser()!= null){
-                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Executor executor = Executors.newFixedThreadPool(2);
 
-                feedback_ref.child(uid).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        if (FirebaseAuth.getInstance().getCurrentUser()!= null){
+            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-                        for (DataSnapshot branch_snap : dataSnapshot.getChildren()){
+            feedback_ref.child(uid).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                            for (DataSnapshot year_snap : branch_snap.getChildren()){
+                    for (DataSnapshot branch_snap : dataSnapshot.getChildren()){
 
-                                for ( DataSnapshot month_snap : year_snap.getChildren()){
+                        for (DataSnapshot year_snap : branch_snap.getChildren()){
 
-                                    for (DataSnapshot day_snap : month_snap.getChildren()){
+                            for ( DataSnapshot month_snap : year_snap.getChildren()){
 
-                                        for (DataSnapshot feed_snap : day_snap.getChildren()){
+                                for (DataSnapshot day_snap : month_snap.getChildren()){
 
-                                            feedback_class fb_obj = feed_snap.getValue(feedback_class.class);
+                                    for (DataSnapshot feed_snap : day_snap.getChildren()){
 
-                                            if (fb_obj != null){
-                                                String date = time_to_date(fb_obj.getTime_stamp());
-                                                //Toast.makeText(context, "text: " + feed_snap.getKey(), Toast.LENGTH_SHORT).show();
-                                                Branch_data bdata = new Branch_data
-                                                        (fb_obj.getTime_stamp(),date,fb_obj.isUser_feedback(),
-                                                                Objects.requireNonNull(branch_snap.getKey()),
-                                                                fb_obj.getService_point());
-                                                try {
-                                                    appDb.feedbackDAO().addFeedback(bdata);
-                                                }catch (Exception ignored){}
-                                            }
+                                        feedback_class fb_obj = feed_snap.getValue(feedback_class.class);
+
+
+
+                                        if (fb_obj != null){
+
+                                            String date = time_to_date(fb_obj.getTime_stamp());
+                                            //Toast.makeText(context, "text: " + feed_snap.getKey(), Toast.LENGTH_SHORT).show();
+                                            Branch_data bdata = new Branch_data
+                                                    (fb_obj.getTime_stamp(),date,fb_obj.isUser_feedback(),
+                                                            Objects.requireNonNull(branch_snap.getKey()),
+                                                            fb_obj.getService_point());
+
+                                            executor.execute(() -> appDb.feedbackDAO().addFeedback(bdata));
+
                                         }
                                     }
                                 }
                             }
-
-                        }
-
-                        if (remove_listener){
-                            feedback_ref.removeEventListener(this);
                         }
 
                     }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                    if (remove_listener){
+                        feedback_ref.removeEventListener(this);
                     }
-                });
-            }
-        }).start();
 
+                }
 
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+        /*new Thread(() -> {
+
+        }).start();*/
     }
 
     public static double percentage(double amount, double total){

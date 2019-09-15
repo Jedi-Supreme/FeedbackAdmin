@@ -12,10 +12,10 @@ public class Branch_data {
     public static final String TABLE = "FEEDBACKS";
     static final String COLUMN_ID = "id";
     static final String COLUMN_TIMESTAMP = "timestamp";
-    public static final String COLUMN_DATE = "date";
+    private static final String COLUMN_DATE = "date";
     public static final String COLUMN_FEEDBACKS = "feedbacks";
     public static final String COLUMN_BRANCHNAME = "branchname";
-    private static final String COLUMN_SERVICE_POINT = Company_details.SERVICE_POINT;
+    public static final String COLUMN_SERVICE_POINT = Company_details.SERVICE_POINT;
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = COLUMN_ID)

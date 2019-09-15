@@ -72,6 +72,7 @@
 
     <!--Logout button-->
     <Button
+        android:visibility="gone"
         android:onClick="Click_listener"
         android:id="@+id/bt_dash_logout"
         android:layout_width="wrap_content"

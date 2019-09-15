@@ -20,7 +20,7 @@ public class Teams_feedback_Adapter extends RecyclerView.Adapter {
 
     private List<String> team_feedbacks;
 
-    //TODO Work on adpter for team data grouping
+    //TODO Work on adapter for team data grouping
 
     public Teams_feedback_Adapter(List<String> team_feedbacks) {
         this.team_feedbacks = team_feedbacks;

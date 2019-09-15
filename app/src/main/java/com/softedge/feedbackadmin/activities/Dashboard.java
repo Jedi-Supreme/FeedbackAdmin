@@ -23,6 +23,8 @@ import java.text.SimpleDateFormat;
  import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class Dashboard extends AppCompatActivity {
 
@@ -56,9 +58,8 @@ public class Dashboard extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        common.load_all_online_feedbacks(weak_dash.get(),true);
+        common.load_all_online_feedbacks(getApplicationContext(),true);
 
-        //Insert feedback_team_join
         try {
             insert_feedback_teamJoin();
         }catch (Exception e){
@@ -72,57 +73,59 @@ public class Dashboard extends AppCompatActivity {
 
     void insert_feedback_teamJoin(){
 
-        new Thread(() -> {
+        Executor executor = Executors.newFixedThreadPool(2);
 
-                for (String branchname: appDB.feedbackDAO().branch_names()){
+        executor.execute(() -> {
+            for (String branchname: appDB.feedbackDAO().branch_names()){
 
-                    List<Branch_data> branchFeedbackList =  appDB.feedbackDAO().branch_feedbacks(branchname);
+                List<Branch_data> branchFeedbackList =  appDB.feedbackDAO().branch_feedbacks(branchname);
 
-                    for (Branch_data b_feedback: branchFeedbackList){
+                for (Branch_data b_data: branchFeedbackList){
 
-                        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
-                        SimpleDateFormat db_date_format = new SimpleDateFormat(common.db_date_format,Locale.getDefault());
+                    SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                    SimpleDateFormat db_date_format = new SimpleDateFormat(common.db_date_format,Locale.getDefault());
 
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTimeInMillis(Long.parseLong(b_feedback.getTimestamp()));
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis(Long.parseLong(b_data.getTimestamp()));
 
-                        Afternoon_shift afternoon_shift = new Afternoon_shift();
+                    Afternoon_shift afternoon_shift = new Afternoon_shift();
 
-                        String time = timeFormat.format(calendar.getTime());
-                        String date = db_date_format.format(calendar.getTime());
+                    String time = timeFormat.format(calendar.getTime());
+                    String date = db_date_format.format(calendar.getTime());
 
-                        try {
-                            if (calendar.getTime().after(timeFormat.parse(afternoon_shift.getEnd_time()))){
-                                String teamname = appDB.feedbackDAO().night_duty(date,time,b_feedback.getBranchname());
+                    try {
+                        if (calendar.getTime().after(timeFormat.parse(afternoon_shift.getEnd_time()))){
+                            //String teamname = appDB.feedbackDAO().night_duty(date,time,b_data.getBranchname());
+                            String teamname = appDB.feedbackDAO().team_shift(date+" "+time,b_data.getBranchname());
 
-                                Team_Feedback_join team_joinObj = new Team_Feedback_join(
-                                        teamname,
-                                        b_feedback.getUserfeeds(),
-                                        b_feedback.getBranchname(),b_feedback.getTimestamp());
+                            Team_Feedback_join team_joinObj = new Team_Feedback_join(
+                                    teamname,
+                                    b_data.getUserfeeds(),
+                                    b_data.getBranchname(),b_data.getTimestamp());
 
-                                appDB.feedbackDAO().insert_teamFeedback(team_joinObj);
+                            appDB.feedbackDAO().insert_teamFeedback(team_joinObj);
 
-                            }else {
-                                String teamname = appDB.feedbackDAO().team_on_duty(date,time,b_feedback.getBranchname());
+                        }else {
+                            //String teamname = appDB.feedbackDAO().team_on_duty(date,time,b_data.getBranchname());
+                            String teamname = appDB.feedbackDAO().team_shift(date+" "+time,b_data.getBranchname());
 
-                                Team_Feedback_join team_joinObj = new Team_Feedback_join(
-                                        teamname,
-                                        b_feedback.getUserfeeds(),
-                                        b_feedback.getBranchname(),b_feedback.getTimestamp());
+                            Team_Feedback_join team_joinObj = new Team_Feedback_join(
+                                    teamname,
+                                    b_data.getUserfeeds(),
+                                    b_data.getBranchname(),b_data.getTimestamp());
 
-                                appDB.feedbackDAO().insert_teamFeedback(team_joinObj);
-                            }
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                            //Toast.makeText(getApplicationContext(), "Time parse error: "
-                              //      + e.toString(),Toast.LENGTH_LONG).show();
+                            appDB.feedbackDAO().insert_teamFeedback(team_joinObj);
                         }
-
-
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                        //Toast.makeText(getApplicationContext(), "Time parse error: "
+                        //      + e.toString(),Toast.LENGTH_LONG).show();
                     }
-                }
 
-        }).start();
+
+                }
+            }
+        });
 
         /*for (String branchname: appDB.feedbackDAO().branch_names()){
 
@@ -143,7 +146,8 @@ public class Dashboard extends AppCompatActivity {
 
                 try {
                     if (calendar.getTime().after(timeFormat.parse(afternoon_shift.getEnd_time()))){
-                        String teamname = appDB.feedbackDAO().night_duty(date,time,b_feedback.getBranchname());
+                        //String teamname = appDB.feedbackDAO().night_duty(date,time,b_feedback.getBranchname());
+                        String teamname = appDB.feedbackDAO().team_shift(date+" "+time,b_feedback.getBranchname());
 
                         Team_Feedback_join team_joinObj = new Team_Feedback_join(
                                 teamname,
@@ -154,7 +158,7 @@ public class Dashboard extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(),"Data: " + teamname, Toast.LENGTH_SHORT).show();
 
                     }else {
-                        String teamname = appDB.feedbackDAO().team_on_duty(date,time,b_feedback.getBranchname());
+                        String teamname = appDB.feedbackDAO().team_shift(date+" "+time,b_feedback.getBranchname());
 
                         Team_Feedback_join team_joinObj = new Team_Feedback_join(
                                 teamname,
@@ -197,16 +201,9 @@ public class Dashboard extends AppCompatActivity {
             case R.id.bt_dash_settings:
                 //Toast.makeText(getApplicationContext(),"Count: " + appDB.feedbackDAO().getAllDuty_rosters().size(),
                  //       Toast.LENGTH_LONG).show();
-                for (Duty_roster roster : appDB.feedbackDAO().getAllDuty_rosters()){
+                for (String servPoint : appDB.feedbackDAO().service_points_list()){
 
-                    String test = "NAME: " + roster.getTeam_name() +
-                            " \n StartDate: " + roster.getStart_date() +
-                            "\n EndDate: " + roster.getEnd_date() +
-                            "\n StartTime: " + roster.getShift().getStart_time() +
-                            "\n EndTime: " + roster.getShift().getEnd_time();
-
-
-                    Toast.makeText(getApplicationContext(),test ,
+                    Toast.makeText(getApplicationContext(),servPoint ,
                            Toast.LENGTH_SHORT).show();
 
                 }

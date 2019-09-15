@@ -11,11 +11,6 @@ public class feedback_class {
     public feedback_class() {
     }
 
-    public feedback_class(boolean user_feedback, String time_stamp) {
-        this.user_feedback = user_feedback;
-        this.time_stamp = time_stamp;
-    }
-
     public feedback_class(boolean user_feedback, String time_stamp, String service_point){
         this.user_feedback = user_feedback;
         this.time_stamp = time_stamp;
