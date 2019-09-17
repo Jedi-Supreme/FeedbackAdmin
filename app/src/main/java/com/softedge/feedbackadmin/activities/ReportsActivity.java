@@ -21,8 +21,11 @@ import com.softedge.feedbackadmin.adapters.Teams_feedback_Adapter;
 import com.softedge.feedbackadmin.common;
 import com.softedge.feedbackadmin.databases.AppDatabase;
 import com.softedge.feedbackadmin.models.Company_details;
+import com.softedge.feedbackadmin.models.ServPoint_Count;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class ReportsActivity extends AppCompatActivity {
@@ -138,6 +141,19 @@ public class ReportsActivity extends AppCompatActivity {
         ServPoint_report_Adapter servPoint_adapter = new ServPoint_report_Adapter(appDB.feedbackDAO().service_points_list());
         recy_serv_point.setLayoutManager(new LinearLayoutManager(weak_report.get()));
         recy_serv_point.setAdapter(servPoint_adapter);
+    }
+
+    ArrayList<ServPoint_Count> servPoint_counts(){
+        ArrayList<ServPoint_Count> servPointCounts = new ArrayList<>();
+
+        List<String> distinct_servPoint_names = appDB.feedbackDAO().service_points_list();
+
+        for (String servpoint : distinct_servPoint_names){
+
+            //TODO FINISH SERVICE CONT OBJECT LOOP
+        }
+
+        return servPointCounts;
     }
 
     public void delete_function(String branchname){

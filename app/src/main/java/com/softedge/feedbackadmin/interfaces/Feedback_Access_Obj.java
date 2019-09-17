@@ -7,6 +7,7 @@ import android.arch.persistence.room.Query;
 
 import com.softedge.feedbackadmin.models.Branch_data;
 import com.softedge.feedbackadmin.models.Duty_roster;
+import com.softedge.feedbackadmin.models.ServPoint_Count;
 import com.softedge.feedbackadmin.models.Team_Feedback_join;
 import com.softedge.feedbackadmin.models.Shift;
 
@@ -33,8 +34,18 @@ public interface Feedback_Access_Obj {
     @Query("SELECT COUNT(*) FROM " + Branch_data.TABLE + " WHERE " + Branch_data.COLUMN_SERVICE_POINT + " == :service_point")
     int count_serv_point(String service_point);
 
-    @Query("SELECT COUNT(*) FROM " + Branch_data.TABLE + " WHERE " + Branch_data.COLUMN_SERVICE_POINT + " == :servicepoint AND "
-            + Branch_data.COLUMN_FEEDBACKS + " == :feedback")
+    @Query("SELECT " + Branch_data.COLUMN_BRANCHNAME + " FROM " + Branch_data.TABLE + " WHERE " + Branch_data.COLUMN_SERVICE_POINT
+            + " == :service_point GROUP BY " + Branch_data.COLUMN_BRANCHNAME + " ORDER BY " + Branch_data.COLUMN_BRANCHNAME + " ASC")
+    String[] count_serv_point_branchname(String service_point);
+
+    @Query("SELECT COUNT(" + Branch_data.COLUMN_BRANCHNAME + ") FROM " + Branch_data.TABLE + " WHERE " + Branch_data.COLUMN_SERVICE_POINT
+            + " == :service_point GROUP BY " + Branch_data.COLUMN_BRANCHNAME + " ORDER BY " + Branch_data.COLUMN_BRANCHNAME + " ASC")
+    int[] count_serv_point_totalnumb(String service_point);
+
+    @Query("SELECT COUNT(" + Branch_data.COLUMN_BRANCHNAME + ") FROM " + Branch_data.TABLE + " WHERE "
+            + Branch_data.COLUMN_SERVICE_POINT + " == :servicepoint AND "
+            + Branch_data.COLUMN_FEEDBACKS + " == :feedback GROUP BY "
+            + Branch_data.COLUMN_BRANCHNAME + " ORDER BY " + Branch_data.COLUMN_BRANCHNAME + " ASC")
     int count_serv_feedback(String servicepoint, Boolean feedback);
 
     @Query("SELECT DISTINCT " + Branch_data.COLUMN_BRANCHNAME + " FROM " + Branch_data.TABLE +

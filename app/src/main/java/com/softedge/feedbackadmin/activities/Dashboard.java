@@ -13,7 +13,6 @@ import com.softedge.feedbackadmin.common;
 import com.softedge.feedbackadmin.databases.AppDatabase;
 import com.softedge.feedbackadmin.models.Branch_data;
 import com.softedge.feedbackadmin.models.Company_details;
-import com.softedge.feedbackadmin.models.Duty_roster;
 import com.softedge.feedbackadmin.models.Shifts.Afternoon_shift;
 import com.softedge.feedbackadmin.models.Team_Feedback_join;
 
@@ -201,11 +200,15 @@ public class Dashboard extends AppCompatActivity {
             case R.id.bt_dash_settings:
                 //Toast.makeText(getApplicationContext(),"Count: " + appDB.feedbackDAO().getAllDuty_rosters().size(),
                  //       Toast.LENGTH_LONG).show();
-                for (String servPoint : appDB.feedbackDAO().service_points_list()){
+                String[] branchnames = appDB.feedbackDAO().count_serv_point_branchname("Pharmacy");
+                int[] serv_counts = appDB.feedbackDAO().count_serv_point_totalnumb("Pharmacy");
 
-                    Toast.makeText(getApplicationContext(),servPoint ,
-                           Toast.LENGTH_SHORT).show();
+                if (branchnames.length == serv_counts.length){
 
+                    for (int x = 0; x< branchnames.length; x++){
+                        Toast.makeText(getApplicationContext(),branchnames[x] + " - " + serv_counts[x],
+                                Toast.LENGTH_SHORT).show();
+                    }
                 }
                 break;
 
