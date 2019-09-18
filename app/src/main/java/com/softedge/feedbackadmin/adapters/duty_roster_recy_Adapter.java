@@ -60,7 +60,7 @@ public class duty_roster_recy_Adapter extends RecyclerView.Adapter {
             tv_roster_Date.setText(date_text);
             tv_shift_name.setText(team_duty.getShift().getShift_name());
 
-            //TODO Clear input screens
+            //TODO Add delete option to team row
         }
 
     }

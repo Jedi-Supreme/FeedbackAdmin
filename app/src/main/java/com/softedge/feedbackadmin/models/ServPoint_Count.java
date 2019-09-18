@@ -29,14 +29,6 @@ public class ServPoint_Count {
         this.branchname = branchname;
     }
 
-    public int getCount() {
-        return total_count;
-    }
-
-    public void setCount(int count) {
-        this.total_count = count;
-    }
-
     public String getServ_point_name() {
         return serv_point_name;
     }
@@ -59,5 +51,13 @@ public class ServPoint_Count {
 
     public void setBad_count(int bad_count) {
         this.bad_count = bad_count;
+    }
+
+    public int getTotal_count() {
+        return total_count;
+    }
+
+    public void setTotal_count(int total_count) {
+        this.total_count = total_count;
     }
 }

@@ -2,6 +2,7 @@ package com.softedge.feedbackadmin.activities;
 
 import android.content.SharedPreferences;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -138,7 +139,7 @@ public class ReportsActivity extends AppCompatActivity {
     }
 
     void load_serv_point_calc(){
-        ServPoint_report_Adapter servPoint_adapter = new ServPoint_report_Adapter(appDB.feedbackDAO().service_points_list());
+        ServPoint_report_Adapter servPoint_adapter = new ServPoint_report_Adapter(servPoint_counts());
         recy_serv_point.setLayoutManager(new LinearLayoutManager(weak_report.get()));
         recy_serv_point.setAdapter(servPoint_adapter);
     }
@@ -148,9 +149,28 @@ public class ReportsActivity extends AppCompatActivity {
 
         List<String> distinct_servPoint_names = appDB.feedbackDAO().service_points_list();
 
-        for (String servpoint : distinct_servPoint_names){
+        for (String servpoint_name : distinct_servPoint_names){
 
             //TODO FINISH SERVICE CONT OBJECT LOOP
+            String[] branchnames = appDB.feedbackDAO().count_serv_point_branchname(servpoint_name);
+            int[] serv_counts = appDB.feedbackDAO().count_serv_point_totalnumb(servpoint_name);
+
+            if (branchnames.length == serv_counts.length){
+
+                for (int x = 0; x< branchnames.length; x++){
+                    ServPoint_Count servCount = new ServPoint_Count(
+                            branchnames[x],
+                            servpoint_name,
+                            serv_counts[x],
+                            appDB.feedbackDAO().count_serv_feedback(servpoint_name,branchnames[x],common.GOOD_REVIEW),
+                            appDB.feedbackDAO().count_serv_feedback(servpoint_name,branchnames[x],common.BAD_REVIEW)
+                            );
+
+                    servPointCounts.add(servCount);
+                }
+
+            }
+
         }
 
         return servPointCounts;
@@ -158,18 +178,28 @@ public class ReportsActivity extends AppCompatActivity {
 
     public void delete_function(String branchname){
 
-        //TODO ADD DIALOG FOR DELETING DATA
+        AlertDialog alertDialog = new AlertDialog.Builder(weak_report.get()).create();
 
-        delete_branch = v -> appDB.feedbackDAO().delete_all_branchData(branchname);
+        alertDialog.setMessage("Are you sure you want to delete all data for " + branchname + "?");
 
-        if (FirebaseAuth.getInstance().getCurrentUser() != null){
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", (dialog, which) -> alertDialog.dismiss());
 
-            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            DatabaseReference del_ref = FirebaseDatabase.getInstance().getReference(getResources().getString(R.string.fb_feedback));
-            del_ref.child(uid).child(branchname).removeValue();
-        }
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Delete", (dialog, which) -> {
 
-        load_branch_calculations();
+            delete_branch = v -> appDB.feedbackDAO().delete_all_branchData(branchname);
+
+            if (FirebaseAuth.getInstance().getCurrentUser() != null){
+
+                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                DatabaseReference del_ref = FirebaseDatabase.getInstance().getReference(getResources().getString(R.string.fb_feedback));
+                del_ref.child(uid).child(branchname).removeValue();
+            }
+
+            recy_sum_report.getAdapter().notifyDataSetChanged();
+        });
+
+        alertDialog.show();
+
     }
     //-----------------------------------------------DEFINED METHODS--------------------------------
 }

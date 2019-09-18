@@ -1,13 +1,13 @@
 package com.softedge.feedbackadmin.interfaces;
 
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
 import com.softedge.feedbackadmin.models.Branch_data;
 import com.softedge.feedbackadmin.models.Duty_roster;
-import com.softedge.feedbackadmin.models.ServPoint_Count;
 import com.softedge.feedbackadmin.models.Team_Feedback_join;
 import com.softedge.feedbackadmin.models.Shift;
 
@@ -23,7 +23,7 @@ public interface Feedback_Access_Obj {
     int countAll();
 
     @Query("SELECT DISTINCT " + Branch_data.COLUMN_SERVICE_POINT + " FROM " + Branch_data.TABLE + " ORDER BY "
-            + Branch_data.COLUMN_BRANCHNAME + " ASC")
+            + Branch_data.COLUMN_SERVICE_POINT + " ASC")
     List<String> service_points_list();
 
     @Query("SELECT DISTINCT " + Branch_data.COLUMN_BRANCHNAME + " FROM " + Branch_data.TABLE + " WHERE "
@@ -34,19 +34,21 @@ public interface Feedback_Access_Obj {
     @Query("SELECT COUNT(*) FROM " + Branch_data.TABLE + " WHERE " + Branch_data.COLUMN_SERVICE_POINT + " == :service_point")
     int count_serv_point(String service_point);
 
+    //--------------------------------------------------------------------------------------------------------------------------
     @Query("SELECT " + Branch_data.COLUMN_BRANCHNAME + " FROM " + Branch_data.TABLE + " WHERE " + Branch_data.COLUMN_SERVICE_POINT
             + " == :service_point GROUP BY " + Branch_data.COLUMN_BRANCHNAME + " ORDER BY " + Branch_data.COLUMN_BRANCHNAME + " ASC")
-    String[] count_serv_point_branchname(String service_point);
+    String[] count_serv_point_branchname(String service_point); //Returns branch names for each service point
 
     @Query("SELECT COUNT(" + Branch_data.COLUMN_BRANCHNAME + ") FROM " + Branch_data.TABLE + " WHERE " + Branch_data.COLUMN_SERVICE_POINT
             + " == :service_point GROUP BY " + Branch_data.COLUMN_BRANCHNAME + " ORDER BY " + Branch_data.COLUMN_BRANCHNAME + " ASC")
-    int[] count_serv_point_totalnumb(String service_point);
+    int[] count_serv_point_totalnumb(String service_point); //Returns count grouped by branchname
+    //--------------------------------------------------------------------------------------------------------------------------
 
     @Query("SELECT COUNT(" + Branch_data.COLUMN_BRANCHNAME + ") FROM " + Branch_data.TABLE + " WHERE "
             + Branch_data.COLUMN_SERVICE_POINT + " == :servicepoint AND "
-            + Branch_data.COLUMN_FEEDBACKS + " == :feedback GROUP BY "
-            + Branch_data.COLUMN_BRANCHNAME + " ORDER BY " + Branch_data.COLUMN_BRANCHNAME + " ASC")
-    int count_serv_feedback(String servicepoint, Boolean feedback);
+            + Branch_data.COLUMN_FEEDBACKS + " == :feedback AND "
+            + Branch_data.COLUMN_BRANCHNAME + " == :branchname ")
+    int count_serv_feedback(String servicepoint, String branchname, Boolean feedback);
 
     @Query("SELECT DISTINCT " + Branch_data.COLUMN_BRANCHNAME + " FROM " + Branch_data.TABLE +
             " ORDER BY " + Branch_data.COLUMN_BRANCHNAME + " ASC")
@@ -71,6 +73,7 @@ public interface Feedback_Access_Obj {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void addFeedback(Branch_data branch_data);
 
+    //TODO FIX DELETE QUERY
     @Query("DELETE FROM " + Branch_data.TABLE + " WHERE " + Branch_data.COLUMN_BRANCHNAME + " == :branchname")
     void delete_all_branchData(String branchname);
 
@@ -90,7 +93,6 @@ public interface Feedback_Access_Obj {
     @Query("SELECT DISTINCT * FROM " + Duty_roster.TABLE + " WHERE " + Branch_data.COLUMN_BRANCHNAME + " == :branchname")
     List<Duty_roster> getDuty_rosters(String branchname);
 
-    //TODO FIX SHIFT QUERY AND IMPROVE APP PERFORMANCE
     //For matching team and populating join table
     @Query("SELECT " + Duty_roster.COLUMN_TEAM_NAME + " FROM " + Duty_roster.TABLE
             + " WHERE " + Branch_data.COLUMN_BRANCHNAME + " == :branchname AND :date_time BETWEEN "

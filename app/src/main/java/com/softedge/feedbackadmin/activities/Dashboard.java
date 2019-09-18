@@ -202,11 +202,16 @@ public class Dashboard extends AppCompatActivity {
                  //       Toast.LENGTH_LONG).show();
                 String[] branchnames = appDB.feedbackDAO().count_serv_point_branchname("Pharmacy");
                 int[] serv_counts = appDB.feedbackDAO().count_serv_point_totalnumb("Pharmacy");
+                //int[] serv_goodcount = appDB.feedbackDAO().count_serv_feedback("Pharmacy",common.GOOD_REVIEW);
+                //int[] serv_badCount = appDB.feedbackDAO().count_serv_feedback("Pharmacy",common.BAD_REVIEW);
+
 
                 if (branchnames.length == serv_counts.length){
 
                     for (int x = 0; x< branchnames.length; x++){
-                        Toast.makeText(getApplicationContext(),branchnames[x] + " - " + serv_counts[x],
+                        Toast.makeText(getApplicationContext(),branchnames[x] + " - " + serv_counts[x]
+                                        +"\n Good: " + appDB.feedbackDAO().count_serv_feedback("Pharmacy",branchnames[x],common.GOOD_REVIEW)
+                                        + " - Bad: " + appDB.feedbackDAO().count_serv_feedback("Pharmacy",branchnames[x],common.BAD_REVIEW),
                                 Toast.LENGTH_SHORT).show();
                     }
                 }
