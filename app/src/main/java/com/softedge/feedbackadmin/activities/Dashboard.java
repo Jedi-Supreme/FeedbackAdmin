@@ -173,10 +173,6 @@ public class Dashboard extends AppCompatActivity {
                             + e.toString(),Toast.LENGTH_LONG).show();
                 }
 
-                //TODO FIX TEAM NAME FETCH
-
-
-
             }
 
         }*/

@@ -151,7 +151,6 @@ public class ReportsActivity extends AppCompatActivity {
 
         for (String servpoint_name : distinct_servPoint_names){
 
-            //TODO FINISH SERVICE CONT OBJECT LOOP
             String[] branchnames = appDB.feedbackDAO().count_serv_point_branchname(servpoint_name);
             int[] serv_counts = appDB.feedbackDAO().count_serv_point_totalnumb(servpoint_name);
 

@@ -21,8 +21,6 @@ public class ServPoint_report_Adapter extends RecyclerView.Adapter {
 
     private ArrayList<ServPoint_Count> servPoint_count_obj;
 
-    //TODO Work on adapter for service point branch grouping
-
     public ServPoint_report_Adapter(ArrayList<ServPoint_Count> servPoint_count_obj) {
         this.servPoint_count_obj = servPoint_count_obj;
     }

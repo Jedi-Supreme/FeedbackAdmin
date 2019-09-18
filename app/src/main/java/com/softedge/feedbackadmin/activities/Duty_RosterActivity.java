@@ -49,7 +49,7 @@ public class Duty_RosterActivity extends AppCompatActivity {
     }
 
     public void loadRosters(){
-        //TODO load roster lists
+        //TODO load roster lists (Seperate adding team shift from viewing all team shifts)
     }
     //-----------------------------------------------DEFINED METHODS--------------------------------
 }

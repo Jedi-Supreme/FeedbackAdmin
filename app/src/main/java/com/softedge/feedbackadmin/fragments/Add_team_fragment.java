@@ -349,12 +349,13 @@ public class Add_team_fragment extends Fragment implements View.OnClickListener 
 
     }
 
-    //TODO create input clearer method
-
     void refresh_list(){
         duty_roster_recy_Adapter dutyAdapter = new duty_roster_recy_Adapter(appDB.feedbackDAO().getDuty_rosters(bname));
         recy_add_team.setLayoutManager(new LinearLayoutManager(parent_view.getContext()));
         recy_add_team.setAdapter(dutyAdapter);
+
+        //Clear team name input
+        et_team_name.setText("");
     }
     //======================================DEFINED METHODS=========================================
 }

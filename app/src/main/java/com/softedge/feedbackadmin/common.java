@@ -38,7 +38,6 @@ public class common {
 
         calendar.setTimeInMillis(Long.parseLong(timeMillis));
 
-        //TODO CHANGE DATE TIME FORMAT FOR SAVING TO DB
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:MM:SS", Locale.getDefault());
 
         return  simpleDateFormat.format(calendar.getTime());
@@ -105,7 +104,6 @@ public class common {
                                         if (fb_obj != null){
 
                                             String date = time_to_date(fb_obj.getTime_stamp());
-                                            String branch_servpt = branch_snap.getKey() + "~" +fb_obj.getService_point();
                                             //Toast.makeText(context, "text: " + feed_snap.getKey(), Toast.LENGTH_SHORT).show();
                                             Branch_data bdata = new Branch_data
                                                     (fb_obj.getTime_stamp(),date,fb_obj.isUser_feedback(),

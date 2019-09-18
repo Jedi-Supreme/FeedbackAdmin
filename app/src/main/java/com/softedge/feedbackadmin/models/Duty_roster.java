@@ -40,7 +40,7 @@ public class Duty_roster {
 
     public Duty_roster(String start_date, String end_date,
                        String team_name, @NonNull Shift shift, @NonNull String branch_name) {
-        //TODO MAKE START TIME AND END TIME FULL DATE-TIME STRING FOR BOTH START DATE AND END DATE,
+        //MAKE START TIME AND END TIME FULL DATE-TIME STRING FOR BOTH START DATE AND END DATE,
         // START TIME = STARTDATE+STARTTIME
         this.start_date = start_date;
         this.end_date = end_date;
