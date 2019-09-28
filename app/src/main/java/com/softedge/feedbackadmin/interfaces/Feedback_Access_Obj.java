@@ -57,9 +57,6 @@ public interface Feedback_Access_Obj {
     @Query(selectTable + " WHERE " + Branch_data.COLUMN_BRANCHNAME + " LIKE :branchname")
     int count_branchName(String branchname);
 
-    //@Query(selectTable + " GROUP BY " + Branch_data.COLUMN_DATE)
-    //int[] count_date();
-
     @Query(selectTable + " WHERE " + Branch_data.COLUMN_FEEDBACKS + " == :userfeed" )
     int count_feedback(Boolean userfeed);
 
@@ -74,7 +71,7 @@ public interface Feedback_Access_Obj {
     void addFeedback(Branch_data branch_data);
 
     //TODO FIX DELETE QUERY
-    @Query("DELETE FROM " + Branch_data.TABLE + " WHERE " + Branch_data.COLUMN_BRANCHNAME + " == :branchname")
+    @Query("DELETE FROM " + Branch_data.TABLE + " WHERE " + Branch_data.COLUMN_BRANCHNAME + " = :branchname;" )
     void delete_all_branchData(String branchname);
 
     @Query(selectTable + " WHERE :query")
@@ -98,6 +95,9 @@ public interface Feedback_Access_Obj {
             + " WHERE " + Branch_data.COLUMN_BRANCHNAME + " == :branchname AND :date_time BETWEEN "
             + Shift.COLUMN_START_TIME + " AND " + Shift.COLUMN_END_TIME)
     String team_shift(String date_time, String branchname);
+
+    @Delete
+    void del_selected_teamShift(Duty_roster teamshift);
     //===========================================DUTY ROSTER========================================
 
     //=======================================FEEDBACK ROSTER JOIN===================================

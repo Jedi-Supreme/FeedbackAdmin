@@ -18,12 +18,10 @@ import java.util.Locale;
 
 public class Teams_feedback_Adapter extends RecyclerView.Adapter {
 
-    private List<String> team_feedbacks;
+    private List<String> team_names;
 
-    //TODO Work on adapter for team data grouping
-
-    public Teams_feedback_Adapter(List<String> team_feedbacks) {
-        this.team_feedbacks = team_feedbacks;
+    public Teams_feedback_Adapter(List<String> team_names) {
+        this.team_names = team_names;
     }
 
     @NonNull
@@ -36,12 +34,12 @@ public class Teams_feedback_Adapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ((branchnames_list_holder) holder).bind_views(team_feedbacks.get(position));
+        ((branchnames_list_holder) holder).bind_views(team_names.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return team_feedbacks.size();
+        return team_names.size();
     }
 
     public class branchnames_list_holder extends RecyclerView.ViewHolder{

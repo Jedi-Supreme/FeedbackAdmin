@@ -31,7 +31,6 @@ import com.softedge.feedbackadmin.models.Shifts.Night_shift;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -42,6 +41,7 @@ public class Add_team_fragment extends Fragment implements View.OnClickListener 
     Button bt_team_add;
     RecyclerView recy_add_team;
     AppCompatSpinner sp_team_shift;
+    View.OnClickListener refresh_ClickListener;
 
     ViewGroup parent_view;
 
@@ -83,9 +83,12 @@ public class Add_team_fragment extends Fragment implements View.OnClickListener 
 
         appDB = AppDatabase.getInstance(parent_view.getContext());
 
+        refresh_ClickListener = v -> refresh_list();
+
         try {
             refresh_list();
         }catch (Exception ignored){}
+
 
         return  view;
     }
@@ -349,8 +352,8 @@ public class Add_team_fragment extends Fragment implements View.OnClickListener 
 
     }
 
-    void refresh_list(){
-        duty_roster_recy_Adapter dutyAdapter = new duty_roster_recy_Adapter(appDB.feedbackDAO().getDuty_rosters(bname));
+    public void refresh_list(){
+        duty_roster_recy_Adapter dutyAdapter = new duty_roster_recy_Adapter(appDB.feedbackDAO().getDuty_rosters(bname), this);
         recy_add_team.setLayoutManager(new LinearLayoutManager(parent_view.getContext()));
         recy_add_team.setAdapter(dutyAdapter);
 

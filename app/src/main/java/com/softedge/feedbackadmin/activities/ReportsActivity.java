@@ -21,6 +21,7 @@ import com.softedge.feedbackadmin.adapters.ServPoint_report_Adapter;
 import com.softedge.feedbackadmin.adapters.Teams_feedback_Adapter;
 import com.softedge.feedbackadmin.common;
 import com.softedge.feedbackadmin.databases.AppDatabase;
+import com.softedge.feedbackadmin.models.Branch_data;
 import com.softedge.feedbackadmin.models.Company_details;
 import com.softedge.feedbackadmin.models.ServPoint_Count;
 
@@ -28,6 +29,9 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ReportsActivity extends AppCompatActivity {
 
@@ -177,6 +181,8 @@ public class ReportsActivity extends AppCompatActivity {
 
     public void delete_function(String branchname){
 
+         ExecutorService executor = Executors.newFixedThreadPool(2);
+
         AlertDialog alertDialog = new AlertDialog.Builder(weak_report.get()).create();
 
         alertDialog.setMessage("Are you sure you want to delete all data for " + branchname + "?");
@@ -185,16 +191,25 @@ public class ReportsActivity extends AppCompatActivity {
 
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Delete", (dialog, which) -> {
 
-            delete_branch = v -> appDB.feedbackDAO().delete_all_branchData(branchname);
-
             if (FirebaseAuth.getInstance().getCurrentUser() != null){
+
+                //List<Branch_data> branchFeeds = appDB.feedbackDAO().branch_feedbacks(branchname);
+
+                executor.execute(() -> delete_branch = v -> appDB.feedbackDAO().delete_all_branchData(branchname));
 
                 String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 DatabaseReference del_ref = FirebaseDatabase.getInstance().getReference(getResources().getString(R.string.fb_feedback));
                 del_ref.child(uid).child(branchname).removeValue();
+
+                if (executor.isTerminated()){
+                load_branch_calculations();
+                }
+            }else {
+                Toast.makeText(getApplicationContext(),"failed deleting", Toast.LENGTH_SHORT).show();
             }
 
-            recy_sum_report.getAdapter().notifyDataSetChanged();
+
+            //recy_sum_report.getAdapter().notifyDataSetChanged();
         });
 
         alertDialog.show();

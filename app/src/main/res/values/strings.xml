@@ -48,4 +48,5 @@
     <string name="add_team_lbl">Add Team</string>
     <string name="team_shifts_lbl">Team Shifts</string>
     <string name="branches_list">Branches List</string>
+    <string name="survey_questions_lbl">Survey Questions</string>
 </resources>

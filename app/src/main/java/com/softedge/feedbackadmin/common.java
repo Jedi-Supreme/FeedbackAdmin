@@ -99,8 +99,6 @@ public class common {
 
                                         feedback_class fb_obj = feed_snap.getValue(feedback_class.class);
 
-
-
                                         if (fb_obj != null){
 
                                             String date = time_to_date(fb_obj.getTime_stamp());
